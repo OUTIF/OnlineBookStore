@@ -9,8 +9,8 @@ class Payment {
 protected:
 	double amount;
 public:
-	Payment(double=0);
+	
 	double getAmount();
 	void setAmount(double);
-	virtual void performPayment() = 0;
+	virtual void performPayment();
 };
