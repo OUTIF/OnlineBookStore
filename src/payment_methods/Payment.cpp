@@ -19,3 +19,12 @@ void Payment::setAmount(double newamount) {
 	}
 } 
 
+void Payment::performPayment() {
+	if (this->amount < 0) {
+		cout << "There is no enough money to perform the payment;";
+	}
+	else {
+		cout << "The payment performed using nondefined method.";
+	}
+
+}
