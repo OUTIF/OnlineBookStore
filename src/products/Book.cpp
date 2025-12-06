@@ -1,14 +1,6 @@
-/**
-* İsim: İbrahim Kütük
-* Tarih: 5/12/2025
-* Dosya: Book.cpp
-* Açıklama: Book sınıfının implementasyonu.
-*/
-
 #include "Book.h"
 #include <iostream>
 
-// Base class constructor'ını (Product) çağırarak başlatma listesi (initializer list) kullanıyoruz.
 Book::Book(int id, string name, double price, string author, string publisher, int page)
     : Product(id, name, price) {
     this->author = author;
@@ -40,8 +32,7 @@ void Book::setPage(int page) {
     this->page = page;
 }
 
-// Kitap özelliklerini ekrana yazdırma
-void Book::printProperties() const {
+void Book::printProperties()  {
     cout << "--- Kitap Detaylari ---" << endl;
     cout << "ID: " << getID() << endl;
     cout << "Isim: " << getName() << endl;

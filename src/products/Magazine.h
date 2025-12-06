@@ -1,19 +1,11 @@
-/**
-* İsim: İbrahim Kütük
-* Tarih: 5/12/2025
-* Dosya: Magazine.h
-* Açıklama: Product sınıfından türetilen Dergi sınıfı.
-*/
-
-#ifndef MAGAZINE_H
-#define MAGAZINE_H
+#pragma once
 
 #include "Product.h"
 
 class Magazine : public Product {
 private:
-    int issue;   // Sayı
-    string type; // Tür (Bilim, Moda, Teknoloji vb.)
+    int issue;   
+    string type; 
 
 public:
     Magazine(int id, string name, double price, int issue, string type);
@@ -24,8 +16,5 @@ public:
     string getType() const;
     void setType(string type);
 
-    // Polymorphism
-    void printProperties() const override;
+    void printProperties() override;
 };
-
-#endif

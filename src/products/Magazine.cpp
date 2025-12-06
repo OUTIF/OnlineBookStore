@@ -1,9 +1,3 @@
-/**
-* İsim: İbrahim Kütük
-* Tarih: 5/12/2025
-* Dosya: Magazine.cpp
-* Açıklama: Magazine sınıfının implementasyonu.
-*/
 
 #include "Magazine.h"
 #include <iostream>
@@ -30,12 +24,12 @@ void Magazine::setType(string type) {
     this->type = type;
 }
 
-void Magazine::printProperties() const {
-    cout << "--- Dergi Detaylari ---" << endl;
+void Magazine::printProperties(){
+    cout << "--- Magazine Details ---" << endl;
     cout << "ID: " << getID() << endl;
-    cout << "Isim: " << getName() << endl;
-    cout << "Fiyat: " << getPrice() << " TL" << endl;
-    cout << "Sayi: " << issue << endl;
-    cout << "Tur: " << type << endl;
+    cout << "name: " << getName() << endl;
+    cout << "price: " << getPrice() << " TL" << endl;
+    cout << "issue: " << issue << endl;
+    cout << "type: " << type << endl;
     cout << "-----------------------" << endl;
 }

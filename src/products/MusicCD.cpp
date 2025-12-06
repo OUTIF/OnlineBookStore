@@ -1,9 +1,3 @@
-/**
-* İsim: İbrahim Kütük
-* Tarih: 5/12/2025
-* Dosya: MusicCD.cpp
-* Açıklama: MusicCD sınıfının implementasyonu.
-*/
 
 #include "MusicCD.h"
 #include <iostream>
@@ -30,12 +24,12 @@ void MusicCD::setType(string type) {
     this->type = type;
 }
 
-void MusicCD::printProperties() const {
-    cout << "--- Muzik CD Detaylari ---" << endl;
+void MusicCD::printProperties() {
+    cout << "--- music CD Detials ---" << endl;
     cout << "ID: " << getID() << endl;
-    cout << "Isim: " << getName() << endl;
-    cout << "Fiyat: " << getPrice() << " TL" << endl;
-    cout << "Sarkici: " << singer << endl;
-    cout << "Tur: " << type << endl;
+    cout << "name: " << getName() << endl;
+    cout << "price: " << getPrice() << " TL" << endl;
+    cout << "singer: " << singer << endl;
+    cout << "type: " << type << endl;
     cout << "--------------------------" << endl;
 }
