@@ -1,23 +1,15 @@
-/**
-* İsim: İbrahim Kütük
-* Tarih: 5/12/2025
-* Dosya: Product.cpp
-* Açıklama: Product sınıfının metod gövdeleri.
-*/
 
 #include "Product.h"
 
-// Yapıcı metod: Temel değişkenleri başlatır
 Product::Product(int id, string name, double price) {
     this->id = id;
     this->name = name;
     this->price = price;
 }
 
-// Yıkıcı metod
 Product::~Product() {}
 
-// --- Getter ve Setter Implementasyonları ---
+
 
 int Product::getID() const {
     return id;
@@ -40,9 +32,17 @@ double Product::getPrice() const {
 }
 
 void Product::setPrice(double price) {
-    // Fiyat negatif olamaz kontrolü eklenebilir
-    if(price >= 0)
+
+    if (price >= 0)
         this->price = price;
     else
-        cout << "Hata: Fiyat negatif olamaz!" << endl;
+        cout << "Error: price cant be negative!" << endl;
+}
+
+void Product::printProperties() {
+    cout << "--- product details ---" << endl;
+    cout << "ID: " << getID() << endl;
+    cout << "name: " << getName() << endl;
+    cout << "price: " << getPrice() << " TL" << endl;
+    cout << "-----------------------" << endl;
 }
