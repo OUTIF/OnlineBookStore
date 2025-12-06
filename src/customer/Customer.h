@@ -17,6 +17,11 @@ private:
 
 public:
 
+	Customer(long Id = 0, string Name = "", string Address = "", string Phone = "",
+		double Bonus = 0, string Email = "", string UserName = "", string Password = "");;
+
+	~Customer();
+
 	void sendBill(); // Not figured
 
 	long getCustomerID();
@@ -49,6 +54,9 @@ public:
 
 	void useBonus();
 
+	void getInfo();
+
+	
 
 
 };

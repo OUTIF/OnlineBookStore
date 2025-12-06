@@ -1,4 +1,29 @@
+#include <iostream>
+#include <stdexcept>
 #include "Customer.h"
+
+Customer::Customer(long Id, string Name, string Address, string Phone,
+    double Bonus, string Email, string UserName, string Password) {
+    if (Id < 0) {
+        throw invalid_argument("Customer ID cannot be negative");
+    }
+    this->customerID = Id;
+
+    this->name = Name;
+    this->address = Address;
+    this->phone = Phone;
+
+    if (Bonus < 0) {
+        throw invalid_argument("Bonus cannot be negative");
+    }
+    this->bonus = Bonus;
+
+    this->email = Email;
+    this->username = UserName;
+    this->password = Password;
+}
+
+Customer::~Customer() {}
 
 void Customer::setName(string iname) { this->name = iname; }
 string Customer::getName() { return this->name; }
@@ -27,5 +52,22 @@ void Customer::setBonus(double amount) { this->bonus = amount; }
 void Customer::addBonus(double amount) { this->bonus += amount; }
 double Customer::getBonus() { return this->bonus; }
 void Customer::useBonus() { this->bonus = 0; }
+
+bool Customer::checkAccount(string username, string password) {
+    return (this->username == username && this->password == password);
+}
+
+void Customer::getInfo() {
+    cout << "--- Customer details ---" << endl;
+    cout << "ID: " << getCustomerID() << endl;
+    cout << "password:" << getPassword() << endl;
+    cout << "name: " << getName() << endl;
+    cout << "address: " << getAddress()<< endl;
+    cout << "phone number:" << getPhone() << endl;
+    cout << "bonus:" << getBonus() << endl;
+    cout << "email:" << getEmail() << endl;
+    cout << "username:" << getUsername() << endl;
+    cout << "-----------------------" << endl;
+}
 
 
