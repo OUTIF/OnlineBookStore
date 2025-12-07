@@ -10,10 +10,13 @@ private:
 	string name;
 	string bankID;
 public:
+	Check(int Amount,string Name,string BankId);
+	~Check();
 	void performPayment() override;
 	string getName();
 	void setName(string);
 	string getBankID();
 	void setBankID(string);
+	void getInfo() override;
 
 };
