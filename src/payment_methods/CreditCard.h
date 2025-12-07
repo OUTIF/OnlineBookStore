@@ -11,6 +11,8 @@ private:
 	string type;
 	string expData;
 public:
+	CreditCard(int Amount,long Number, string Expdata, string Type = "Not specified");
+	~CreditCard();
 	void performPayment() override;
 	long getNumber();
 	void setNumber(long);
@@ -18,5 +20,6 @@ public:
 	void setTyoe(string);
 	string getExpData();
 	void setExpData(string);
+	void getInfo() override;
 
 };

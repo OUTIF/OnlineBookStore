@@ -5,5 +5,7 @@ using namespace std;
 
 class Cash:public Payment{
 public:
+	Cash(int);
 	void performPayment() override;
+	void getInfo() override;
 };

@@ -2,6 +2,10 @@
 
 using namespace std;
 
+Cash::Cash(int Amount) {
+	this->amount = Amount;
+}
+
 void Cash::performPayment() {
 
 	if (this->amount < 0) {
@@ -11,4 +15,9 @@ void Cash::performPayment() {
 	else{
 		cout << "The payment performed using cash.\n";
 	}
+}
+void Cash::getInfo() {
+	cout << "--- Payment details ---" << endl;
+	cout << "Amount: " << getAmount() << endl;
+	cout << "-----------------------" << endl;
 }
