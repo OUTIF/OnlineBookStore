@@ -5,6 +5,9 @@ using namespace std;
 Cash::Cash(int Amount) {
 	this->amount = Amount;
 }
+Cash::~Cash() {
+
+}
 
 void Cash::performPayment() {
 
