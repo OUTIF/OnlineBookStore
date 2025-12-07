@@ -15,4 +15,6 @@ public:
 	void setAmount(double);
 	virtual void performPayment();
 	virtual void getInfo();
+
+
 };
