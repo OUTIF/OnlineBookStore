@@ -51,7 +51,7 @@ void CustomerMenu::addCustomer() {
         trimmed.erase(trimmed.find_last_not_of(" \t\n\r") + 1);
 
         if (!trimmed.empty()) {
-            c.setPassword(s);
+            c.setName(s);
             break;
         }
 
@@ -195,12 +195,19 @@ int ShoppingMenu::readInt(int min, int max) {
 }
 
 void ShoppingMenu::loginLogout() {
-    if (this->activeCustomer != nullptr) { 
+    if (this->activeCustomer != nullptr) {
+        // Logout
         this->activeCustomer = nullptr;
-        cout << "Log out successfully";
+        cout << "\n------>>Logged out successfully<<------\n";
+
+        // Clean up the cart
+        if (this->cart != nullptr) {
+            delete this->cart;
+            this->cart = nullptr;
+        }
     }
     else { 
-        cout << "------Login<<------\n";
+        cout << "\n------>>Login<<------\n";
         string user;
         string pass;
         cout << "UserName:";
@@ -211,17 +218,56 @@ void ShoppingMenu::loginLogout() {
         for (auto& c : *this->customers) {
             if (user == c.getUsername() && pass == c.getPassword()) {
                 this->activeCustomer = &c;
-                cout << "Welcom '" << user <<"' You have Loged in successfully" << endl;
+                cout << "Welcom '" << user <<"' You have Loged in successfully\n" << endl;
+                this->cart = new ShoppingCart(nullptr, this->activeCustomer);
+                return;  
             }   
             
         }
-        if (this->activeCustomer == nullptr) { cout << "No such a user or your password or username is wrong!"; }
+        if (this->activeCustomer == nullptr) { cout << "No such a user or your password or username is wrong!\n"; }
     }
 
 }
 
 void ShoppingMenu::productOperations() {
-    cout << "(TODO: list products / add to cart)\n";
+    if (this->activeCustomer == nullptr) {
+        cout << "You are not logged in. Please login first.\n";
+        return;
+    }
+
+    cout << "\n--- PRODUCTS ---\n";
+    for (auto& item : *this->products) {
+        cout << endl;
+        item.printProperties();
+        cout << endl;
+    }
+
+    cout << "Enter product ID to add to cart (or -1 to go back):\n";
+
+    while (true) {
+        cout << "ID of product: ";
+        int p;
+        cin >> p;
+
+        if (p == -1) {
+            cout << "Returning to menu...\n";
+            break;  // Exit the loop
+        }
+
+        bool found = false;
+        for (auto& item : *this->products) {
+            if (p == item.getID()) {
+                cout << item.getName() << " has been added to the cart\n";
+                this->cart->addProduct(&item);
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            cout << "Invalid ID. Please try again.\n";
+        }
+    }
 }
 
 void ShoppingMenu::cartOperations() {
@@ -265,7 +311,9 @@ void MainMenu::run() {
 
         case 2:
             cout << "\n--- PRODUCTS ---\n";
-            cout << "(TODO: display products)\n";
+            for (auto& item : *this->products) {
+                item.printProperties();
+            }
             break;
 
         case 3:
