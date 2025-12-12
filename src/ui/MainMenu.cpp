@@ -1,8 +1,5 @@
 #include "MainMenu.h"
 
-/* ============================================================
-   CUSTOMER MENU IMPLEMENTATION
-   ============================================================ */
 CustomerMenu::CustomerMenu(vector<Customer>* customers)
     : customers(customers) {
 }
@@ -145,9 +142,12 @@ void CustomerMenu::listCustomers() {
     }
 }
 
-/* ============================================================
-   SHOPPING MENU IMPLEMENTATION
-   ============================================================ */
+
+
+
+
+
+
 ShoppingMenu::ShoppingMenu(std::vector<Customer>* customers,
     vector<Product>* products,
     Customer* activeCustomer,
@@ -216,7 +216,7 @@ void ShoppingMenu::loginLogout() {
         cin >> pass;
 
         for (auto& c : *this->customers) {
-            if (user == c.getUsername() && pass == c.getPassword()) {
+            if (c.checkAccount(user,pass)) {
                 this->activeCustomer = &c;
                 cout << "Welcom '" << user <<"' You have Loged in successfully\n" << endl;
                 this->cart = new ShoppingCart(nullptr, this->activeCustomer);
@@ -271,20 +271,142 @@ void ShoppingMenu::productOperations() {
 }
 
 void ShoppingMenu::cartOperations() {
-    cout << "(TODO: modify/view cart using ShoppingCart class)\n";
+    if(this->activeCustomer!=nullptr){
+        this->cart->printProduct();
+        return;
+    }
+    else {
+        cout << "You have to log in first to view your cart.";
+        return;
+    }
+
 }
 
 void ShoppingMenu::bonusPaymentMenu() {
-    cout << "(TODO: bonus and payment actions)\n";
+    if (this->activeCustomer != nullptr) {
+        if (this->cart->getPaymentMethod() == nullptr) {
+            cout << "\n---------------Adding Payment Method---------------\n";
+            int paymentchoice;
+            do {
+                cout << "Please add a payment method first\n";
+                cout << "1. Cash\n";
+                cout << "2. Credit Card\n";
+                cout << "3. Check\n";
+                cin >> paymentchoice;
+                if (paymentchoice > 0 && paymentchoice < 4) {
+                    switch (paymentchoice) {
+                    case 1:{
+                        double amount;
+                        cout<< "Please enter amount of cash money:";
+                        cin>>amount;
+                        Cash* cash = new Cash(amount);
+                        this->cart->setPaymentMethod(cash);
+                        break;
+                        return;
+                    }
+                    case 2: {
+                        double amount;
+                        long Number;
+                        string expire;
+                        string type;
+                        cout << "Please enter the amount you want to add the credit card:";
+                        cin >> amount;
+                        cout << "Number of Card:";
+                        cin >> Number;
+                        cout << "Expire date:";
+                        cin >> expire;
+                        cout << "Tyep:";
+                        cin >> type;
+                        CreditCard *card=new CreditCard(amount, Number, expire, type);
+                        this->cart->setPaymentMethod(card);
+                        break;
+                        return;
+                    }
+                    case 3: {
+                        double amount;
+                        string Bankid;
+                        cout << "the amount you want to add the credit card:";
+                        cin >> amount;
+                        cout << "Bank ID:";
+                        cin >> Bankid;
+                        Check *check=new Check(amount, this->activeCustomer->getName(), Bankid);
+                        this->cart->setPaymentMethod(check);
+
+                      break;
+                      return;
+                    }
+                    default :
+                        break;
+                        return;
+                    }
+                }
+
+            } while(paymentchoice>3 && paymentchoice<0);
+            
+
+            
+        }
+        else {
+
+            int choice=0;
+            string s;
+            cout << "\n---------------Payment & Bonus Details---------------\n";
+            cout << "1.Payment Details\n";
+            cout << "2.Bonus Details\n";
+            cin >> choice;
+            switch (choice) {
+            case 1:
+            { 
+                this->cart->getPaymentMethod()->getInfo();
+                break; }
+            case 2:
+            { 
+                cout << "--------------Bonus Details---------------\n";
+                cout << "Bonus:" << this->activeCustomer->getBonus();
+                cout << endl << "using Bonus:";
+                
+                if (this->cart->getBonusactive() == true) {
+                    cout << "Yes\n";
+                }
+                else {
+                    cout << "No\n";
+                }
+
+                cout << "Do you want to use you Bonus for the next purchase(yes,no):";
+                cin >> s;
+                if (s == "yes" || s == "Yes") { this->cart->setBonusUsed(); break; }
+                else { this->cart->setBonusNotUsed(); }
+                
+                cout << "------------------------------";
+
+
+                break; 
+                
+            
+            }
+            default:
+                break;
+            }
+            
+            
+
+        }
+    }
+    else {
+        cout << "You Have To Login First";
+    }
 }
 
 void ShoppingMenu::invoiceMenu() {
-    cout << "(TODO: invoice actions)\n";
 }
 
-/* ============================================================
-   MAIN MENU IMPLEMENTATION
-   ============================================================ */
+
+
+
+
+
+
+
 MainMenu::MainMenu(std::vector<Customer>* customers,
     vector<Product>* products,
     Customer* activeCustomer,
