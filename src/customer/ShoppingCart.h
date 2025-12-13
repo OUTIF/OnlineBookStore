@@ -9,15 +9,16 @@ using namespace std;
 
 class ShoppingCart {
 private:
-
+	double total;
 	list<ProductToPurchase>productToPurchase;
 	Payment* paymentMethod;
 	Customer* customer;
 	bool isBonusUsed=false;
+	int sizeofcart;
 
 public:
 
-	ShoppingCart(Payment* payment,Customer* customer, bool willusebonus=false);
+	ShoppingCart(Payment* payment = nullptr, Customer* customer = nullptr, bool willusebonus = false);
 	~ShoppingCart();
 
 	Payment* getPaymentMethod();
@@ -25,12 +26,17 @@ public:
 	Customer* getCustomer();
 	void setCustomer(Customer*);
 	void setBonusUsed();
+	void setBonusNotUsed();
+	bool getBonusactive();
 	void addProduct(Product*);
 	void removeProduct(Product*);
 	void placeOrder();
 	void CanselOrder();
 	void printProduct();
 	void showInvoice();
+	int size();
+	bool empty();
+	double getTotal();
 
 
 
