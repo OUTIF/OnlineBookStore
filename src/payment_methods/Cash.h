@@ -7,6 +7,6 @@ class Cash:public Payment{
 public:
 	Cash(int);
 	~Cash();
-	void performPayment() override;
+	bool performPayment(double) override;
 	void getInfo() override;
 };
