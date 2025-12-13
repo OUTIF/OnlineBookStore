@@ -13,8 +13,6 @@ public:
 	~Payment();
 	double getAmount();
 	void setAmount(double);
-	virtual void performPayment();
+	virtual bool performPayment(double);
 	virtual void getInfo();
-
-
 };
