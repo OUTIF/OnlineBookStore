@@ -10,9 +10,9 @@ private:
 	string name;
 	string bankID;
 public:
-	Check(int Amount,string Name,string BankId);
+	Check(double Amount,string Name,string BankId);
 	~Check();
-	void performPayment() override;
+	bool performPayment(double) override;
 	string getName();
 	void setName(string);
 	string getBankID();
