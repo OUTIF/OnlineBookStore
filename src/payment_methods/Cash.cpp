@@ -9,15 +9,17 @@ Cash::~Cash() {
 
 }
 
-void Cash::performPayment() {
-
-	if (this->amount < 0) {
-		cout << "There is no enough money to perform the payment;\n";
-	}
-
-	else{
-		cout << "The payment performed using cash.\n";
-	}
+bool Cash::performPayment(double paymentAmount) {
+    if (this->amount < paymentAmount) {
+        cout << "There is no enough money to perform the payment;\n";
+        return false;
+    }
+    else {
+        this->amount -= paymentAmount; 
+        cout << "The payment performed using cash.\n";
+        cout << "Remaining cash: $" << this->amount << "\n";
+        return true;
+    }
 }
 void Cash::getInfo() {
 	cout << "--- Payment details ---" << endl;
