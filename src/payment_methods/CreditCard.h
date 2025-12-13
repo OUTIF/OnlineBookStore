@@ -13,7 +13,7 @@ private:
 public:
 	CreditCard(int Amount,long Number, string Expdata, string Type = "Not specified");
 	~CreditCard();
-	void performPayment() override;
+	bool performPayment(double) override;
 	long getNumber();
 	void setNumber(long);
 	string getType();
