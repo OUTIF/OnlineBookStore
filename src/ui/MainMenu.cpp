@@ -1,5 +1,7 @@
 #include "MainMenu.h"
-
+#include "Magazine.h"
+#include "MusicCD.h"
+#include "Book.h"
 
 CustomerMenu::CustomerMenu(vector<Customer>* customers)
     : customers(customers) {
@@ -239,37 +241,93 @@ void ShoppingMenu::productOperations() {
         return;
     }
 
-    cout << "\n--- PRODUCTS ---\n";
-    for (auto& item : *this->products) {
-        cout << endl;
-        item.printProperties();
-    }
-    cout << endl<<endl;
+    bool back = false;
 
-    cout << "Enter product ID to add to cart (or -1 to go back):\n";
+    while (!back) {
+        cout << "\n=== PRODUCT CATEGORIES ===\n"
+            << "1. Magazines \n"
+            << "2. Music CDs \n"
+            << "3. Books \n"
+            << "4. View All Products\n"
+            << "5. Back to Shopping Menu\n"
+            << "Choose: ";
 
-    while (true) {
-        cout << "ID of product: ";
-        int p;
-        cin >> p;
+        int categoryChoice = readInt(1, 5);
 
-        if (p == -1) {
-            cout << "Returning to menu...\n";
-            break;  // Exit the loop
+        if (categoryChoice == 5) {
+            cout << "Returning to Shopping Menu...\n";
+            return;
         }
 
-        bool found = false;
-        for (auto& item : *this->products) {
-            if (p == item.getID()) {
-                cout << item.getName() << " has been added to the cart\n";
-                this->cart->addProduct(&item);
-                found = true;
+        // Display products by category
+        switch (categoryChoice) {
+        case 1: // Magazines (IDs starting with 1)
+            cout << "\n--- MAGAZINES ---\n";
+            for (auto& item : *this->products) {
+                int id = item.getID();
+                if (id >= 1000 && id < 2000) {  // IDs 1xxx
+                    item.printProperties();
+                }
+            }
+            break;
+
+        case 2: // Music CDs (IDs starting with 2)
+            cout << "\n--- MUSIC CDs ---\n";
+            for (auto& item : *this->products) {
+                int id = item.getID();
+                if (id >= 2000 && id < 3000) {  // IDs 2xxx
+                    item.printProperties();
+                }
+            }
+            break;
+
+        case 3: // Books (IDs starting with 3)
+            cout << "\n--- BOOKS ---\n";
+            for (auto& item : *this->products) {
+                int id = item.getID();
+                if (id >= 3000 && id < 4000) {  // IDs 3xxx                 
+                    item.printProperties();
+                }
+            }
+            break;
+
+        case 4: // All Products
+            cout << "---------------All Products---------------";
+            for (auto& item : *this->products) {
+                cout << endl;
+                item.printProperties();
+            }
+            break;
+        }
+
+        cout << endl;
+
+        // Add products to cart
+        cout << "Enter product ID to add to cart (or -1 to go back):\n";
+
+        while (true) {
+            cout << "ID of product: ";
+            int p;
+            cin >> p;
+
+            if (p == -1) {
+                cout << "Returning to category menu...\n";
                 break;
             }
-        }
 
-        if (!found) {
-            cout << "Invalid ID. Please try again.\n";
+            bool found = false;
+            for (auto& item : *this->products) {
+                if (p == item.getID()) {
+                    cout << item.getName() << " has been added to the cart\n";
+                    this->cart->addProduct(&item);
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                cout << "Invalid ID. Please try again.\n";
+            }
         }
     }
 }
@@ -404,40 +462,34 @@ void ShoppingMenu::cartOperations() {
     }
 }
 
+
 void ShoppingMenu::bonusPaymentMenu() {
-    // 1. VALIDATION: Check if user is logged in
     if (this->activeCustomer == nullptr) {
         cout << "You have to log in first.\n";
         return;
     }
 
-    // 2. VALIDATION: Check if cart exists and has items
     if (this->cart == nullptr || this->cart->empty()) {
         cout << "Your cart is empty. Add items before proceeding to payment.\n";
         return;
     }
 
-    // 3. MAIN MENU LOOP: Keep showing menu until user goes back
     bool backToCart = false;
 
     while (!backToCart) {
-        // RE-CHECK if cart is still valid (could be empty after purchase)
         if (this->cart == nullptr || this->cart->empty()) {
             cout << "\nCart is empty. Returning to shopping menu.\n";
             return;
         }
 
-        // Display header
         cout << "\n===============================================\n";
         cout << "|       BONUS & PAYMENT MENU                  |\n";
         cout << "===============================================\n";
 
-        // Display cart summary with current total
         cout << "\n--- Cart Summary ---\n";
         this->cart->printProduct();
         cout << "\nTotal Amount: $" << this->cart->getTotal() << "\n";
 
-        // Show menu options
         cout << "\n=== OPTIONS ===\n"
             << "1. Set/Change Payment Method\n"
             << "2. View Payment Details\n"
@@ -448,7 +500,6 @@ void ShoppingMenu::bonusPaymentMenu() {
 
         int choice = readInt(1, 5);
 
-        // Handle user's choice
         switch (choice) {
 
         case 1: {
@@ -460,33 +511,28 @@ void ShoppingMenu::bonusPaymentMenu() {
 
             int paymentChoice = readInt(1, 3);
 
-            // Store old payment method temporarily
             Payment* oldPayment = this->cart->getPaymentMethod();
             Payment* newPayment = nullptr;
             bool paymentSet = false;
 
             switch (paymentChoice) {
 
-                // CASH PAYMENT
             case 1: {
                 double amount;
                 cout << "Enter cash amount: $";
                 cin >> amount;
 
-                // Validate sufficient amount
                 if (amount < this->cart->getTotal()) {
                     cout << "Insufficient cash amount! Need at least $" << this->cart->getTotal() << "\n";
                     break;
                 }
 
-                // Create Cash payment object
                 newPayment = new Cash(amount);
                 paymentSet = true;
                 cout << "Cash payment method set successfully.\n";
                 break;
             }
 
-                  // CREDIT CARD PAYMENT
             case 2: {
                 double amount;
                 long cardNumber;
@@ -496,16 +542,14 @@ void ShoppingMenu::bonusPaymentMenu() {
                 cout << "Enter amount to charge: $";
                 cin >> amount;
 
-                // Validate sufficient amount
                 if (amount < this->cart->getTotal()) {
                     cout << "Insufficient amount! Need at least $" << this->cart->getTotal() << "\n";
                     break;
                 }
 
-                // Get card details
                 cout << "Card Number: ";
                 cin >> cardNumber;
-                cin.ignore(); // Clear newline buffer
+                cin.ignore();
 
                 cout << "Expiration Date (MM/YY): ";
                 getline(cin, expireDate);
@@ -513,14 +557,12 @@ void ShoppingMenu::bonusPaymentMenu() {
                 cout << "Card Type (Visa/MasterCard/etc): ";
                 getline(cin, cardType);
 
-                // Create CreditCard payment object
                 newPayment = new CreditCard(amount, cardNumber, expireDate, cardType);
                 paymentSet = true;
                 cout << "Credit card payment method set successfully.\n";
                 break;
             }
 
-                  // CHECK PAYMENT
             case 3: {
                 double amount;
                 string bankID;
@@ -528,17 +570,15 @@ void ShoppingMenu::bonusPaymentMenu() {
                 cout << "Enter check amount: $";
                 cin >> amount;
 
-                // Validate sufficient amount
                 if (amount < this->cart->getTotal()) {
                     cout << "Insufficient check amount! Need at least $" << this->cart->getTotal() << "\n";
                     break;
                 }
 
-                cin.ignore(); // Clear newline buffer
+                cin.ignore();
                 cout << "Bank ID: ";
                 getline(cin, bankID);
 
-                // Create Check payment object
                 newPayment = new Check(amount, this->activeCustomer->getName(), bankID);
                 paymentSet = true;
                 cout << "Check payment method set successfully.\n";
@@ -546,13 +586,10 @@ void ShoppingMenu::bonusPaymentMenu() {
             }
             }
 
-            // Only delete old and set new if a new payment was successfully created
             if (paymentSet && newPayment != nullptr) {
-                // Delete old payment method
                 if (oldPayment != nullptr) {
                     delete oldPayment;
                 }
-                // Set new payment method
                 this->cart->setPaymentMethod(newPayment);
             }
 
@@ -562,7 +599,6 @@ void ShoppingMenu::bonusPaymentMenu() {
         case 2: {
             cout << "\n--- Payment Details ---\n";
             if (this->cart->getPaymentMethod() != nullptr) {
-                // Display payment info using the Payment class's getInfo() method
                 this->cart->getPaymentMethod()->getInfo();
             }
             else {
@@ -574,12 +610,10 @@ void ShoppingMenu::bonusPaymentMenu() {
         case 3: {
             cout << "\n--- Bonus Points Management ---\n";
 
-            // Display current bonus information
             cout << "Your Current Bonus Points: " << this->activeCustomer->getBonus() << "\n";
             cout << "Bonus Currently Active: " << (this->cart->getBonusactive() ? "Yes" : "No") << "\n";
 
-            // Calculate potential discount
-            double potentialDiscount = this->activeCustomer->getBonus() * 0.1; // 1 bonus = $0.10
+            double potentialDiscount = this->activeCustomer->getBonus() * 0.1;
             if (potentialDiscount > this->cart->getTotal()) {
                 potentialDiscount = this->cart->getTotal();
             }
@@ -588,12 +622,10 @@ void ShoppingMenu::bonusPaymentMenu() {
                 cout << "Potential Discount: $" << potentialDiscount << "\n";
             }
 
-            // Ask if they want to use bonus
             cout << "\nDo you want to use your bonus points for this purchase? (yes/no): ";
             string useBonusChoice;
             cin >> useBonusChoice;
 
-            // Update bonus usage status in cart
             if (useBonusChoice == "yes" || useBonusChoice == "Yes" || useBonusChoice == "YES") {
                 this->cart->setBonusUsed();
                 cout << "Bonus points will be applied to this purchase.\n";
@@ -606,25 +638,22 @@ void ShoppingMenu::bonusPaymentMenu() {
         }
 
         case 4: {
-            // Validation: Check cart is still not empty
             if (this->cart == nullptr || this->cart->empty()) {
                 cout << "\nERROR: Cart is empty!\n";
                 break;
             }
 
-            // Validation: Ensure payment method is set
             if (this->cart->getPaymentMethod() == nullptr) {
                 cout << "\nERROR: Please set a payment method before completing purchase.\n";
                 break;
             }
+
             double subtotal = this->cart->getTotal();
             double bonusDiscount = 0;
 
-            // Calculate bonus discount if applicable
             if (this->cart->getBonusactive() && this->activeCustomer->getBonus() > 0) {
-                bonusDiscount = this->activeCustomer->getBonus() * 0.1; // 1 bonus point = $0.10 discount
+                bonusDiscount = this->activeCustomer->getBonus() * 0.1;
 
-                // Ensure discount doesn't exceed total
                 if (bonusDiscount > subtotal) {
                     bonusDiscount = subtotal;
                 }
@@ -632,15 +661,12 @@ void ShoppingMenu::bonusPaymentMenu() {
 
             double finalTotal = subtotal - bonusDiscount;
 
-
             cout << "\n===============================================\n";
             cout << "|          PURCHASE SUMMARY                   |\n";
             cout << "===============================================\n";
 
-            // Show all items in cart
             this->cart->printProduct();
 
-            // Show price breakdown
             cout << "\n--- Price Breakdown ---\n";
             cout << "Subtotal:        $" << subtotal << "\n";
 
@@ -656,10 +682,8 @@ void ShoppingMenu::bonusPaymentMenu() {
                 cout << "Final Total:     $" << finalTotal << "\n";
             }
 
-            // Show payment method
             cout << "\n--- Payment Method ---\n";
             this->cart->getPaymentMethod()->getInfo();
-
 
             cout << "\nConfirm purchase? (yes/no): ";
             string confirm;
@@ -667,7 +691,6 @@ void ShoppingMenu::bonusPaymentMenu() {
 
             if (confirm == "yes" || confirm == "Yes" || confirm == "YES") {
 
-                // Check if payment method has sufficient funds
                 if (this->cart->getPaymentMethod()->getAmount() < finalTotal) {
                     cout << "\nPayment failed! Insufficient funds.\n";
                     cout << "Required: $" << finalTotal << "\n";
@@ -675,26 +698,16 @@ void ShoppingMenu::bonusPaymentMenu() {
                     break;
                 }
 
-                // Perform the payment
-                if (!this->cart->getPaymentMethod()->performPayment(finalTotal)) {
-                    cout << "\nPayment processing failed!\n";
-                    break;
-                }
+                this->cart->getPaymentMethod()->performPayment(finalTotal);
 
                 cout << "\nPayment successful!\n";
 
-                // ========================================
-                // STEP 5: Update Bonus Points
-                // ========================================
-
-                // Deduct used bonus points
                 if (this->cart->getBonusactive() && bonusDiscount > 0) {
                     int usedBonus = (int)(bonusDiscount / 0.1);
                     this->activeCustomer->setBonus(this->activeCustomer->getBonus() - usedBonus);
                     cout << usedBonus << " bonus points deducted\n";
                 }
 
-                // Award new bonus points (1 point per $10 spent)
                 int earnedBonus = (int)(subtotal / 10.0);
                 this->activeCustomer->setBonus(this->activeCustomer->getBonus() + earnedBonus);
                 cout << "You earned " << earnedBonus << " new bonus points!\n";
@@ -702,18 +715,15 @@ void ShoppingMenu::bonusPaymentMenu() {
 
                 this->cart->showInvoice();
 
-                // IMPORTANT: Clean up payment method BEFORE clearing cart
-                if (this->cart->getPaymentMethod() != nullptr) {
-                    delete this->cart->getPaymentMethod();
-                    this->cart->setPaymentMethod(nullptr);
-                }
-
-                // Clear cart after successful purchase
                 this->cart->CanselOrder();
 
                 cout << "\nThank you for your purchase!\n";
 
-                // Return to shopping menu (cart is now empty)
+                if (this->cart->getPaymentMethod() != nullptr) {
+                    cout << "Your payment method has been retained with remaining balance: $"
+                        << this->cart->getPaymentMethod()->getAmount() << "\n";
+                }
+
                 backToCart = true;
             }
             else {
@@ -730,8 +740,6 @@ void ShoppingMenu::bonusPaymentMenu() {
         }
     }
 }
-
-
 
 
 
@@ -763,10 +771,7 @@ void MainMenu::run() {
             break;
 
         case 2:
-            cout << "\n--- PRODUCTS ---\n";
-            for (auto& item : *this->products) {
-                item.printProperties();
-            }
+            browseProducts();
             break;
 
         case 3:
@@ -777,6 +782,73 @@ void MainMenu::run() {
             quit = true;
             break;
         }
+    }
+}
+
+void MainMenu::browseProducts() {
+    bool back = false;
+
+    while (!back) {
+        cout << "\n=== PRODUCT CATEGORIES ===\n"
+            << "1. Magazines\n"
+            << "2. Music CDs\n"
+            << "3. Books\n"
+            << "4. View All Products\n"
+            << "5. Back to Main Menu\n"
+            << "Choose: ";
+
+        int categoryChoice = readInt(1, 5);
+
+        if (categoryChoice == 5) {
+            cout << "Returning to Main Menu...\n";
+            return;
+        }
+
+        // Display products by category
+        switch (categoryChoice) {
+        case 1: // Magazines (IDs starting with 1)
+            cout << "\n--- MAGAZINES ---\n";
+            for (auto& item : *this->products) {
+                int id = item.getID();
+                if (id >= 1000 && id < 2000) {  // IDs 1xxx
+                    item.printProperties();
+                }
+            }
+            break;
+
+        case 2: // Music CDs (IDs starting with 2)
+            cout << "\n--- MUSIC CDs ---\n";
+            for (auto& item : *this->products) {
+                int id = item.getID();
+                if (id >= 2000 && id < 3000) {  // IDs 2xxx
+                    item.printProperties();
+                }
+            }
+            break;
+
+        case 3: // Books (IDs starting with 3)
+            cout << "\n--- BOOKS ---\n";
+            for (auto& item : *this->products) {
+                int id = item.getID();
+                if (id >= 3000 && id < 4000) {  // IDs 3xxx
+                    item.printProperties();
+                }
+            }
+            break;
+
+        case 4: // All Products
+            cout << "---------------All Products---------------";
+            for (auto& item : *this->products) {
+                cout << endl;
+                item.printProperties();
+            }
+            break;
+        
+        }
+
+        cout << "\nPress Enter to continue...";
+        cin.ignore();
+        cin.get();
     }
 }
 
