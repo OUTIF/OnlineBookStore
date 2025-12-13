@@ -7,10 +7,12 @@ ShoppingCart::ShoppingCart(Payment* payment, Customer* customer, bool willusebon
     this->paymentMethod = payment;
     this->customer = customer;
     this->isBonusUsed = willusebonus;
+    this->sizeofcart = 0;
+    this->total = 0.0;
 }
 
 ShoppingCart::~ShoppingCart() {
-    cout << "ShoppingCart Destructor";
+   
 }
 
 
@@ -31,22 +33,37 @@ void ShoppingCart::setCustomer(Customer* customer) {
 void ShoppingCart::setBonusUsed() {
 	this->isBonusUsed = true;
 }
+void ShoppingCart::setBonusNotUsed() {
+    this->isBonusUsed = false;
+}
+
+bool ShoppingCart::getBonusactive() {
+    return (this->isBonusUsed);
+}
 
 void ShoppingCart::addProduct(Product* product) {
 	for (auto& item : this->productToPurchase) {
 		if (item.getProduct()->getID() == product->getID()) {
 			item.setQuantity(item.getQuantity() + 1);
+            this->sizeofcart++;
+            this->total+= item.getProduct()->getPrice();
 			return;
 		}
 	}
+    
     this->productToPurchase.push_back(ProductToPurchase(product, 1));
+    this->sizeofcart++;
+    this->total += product->getPrice();
 }
 
 void ShoppingCart::removeProduct(Product* product) {
 	for (auto i = this->productToPurchase.begin(); i != productToPurchase.end(); ++i) {
 		if (i->getProduct()->getID() == product->getID()) {
-			productToPurchase.erase(i);
-			return;
+            this->total -= (i->getProduct()->getPrice() * i->getQuantity());
+            this->sizeofcart -= i->getQuantity();
+
+            productToPurchase.erase(i);
+            return;
 		}
 	}
 }
@@ -78,7 +95,7 @@ void ShoppingCart::placeOrder() {
     if (Total > this->paymentMethod->getAmount()) { cout << "---->There is No enough money to purchase.<----\n"; return; }
     else {
         cout << "\n\n\n\n=========================  ORDER IS BING PROCESSED  ========================\n" << endl;
-        this->paymentMethod->performPayment();
+        this->paymentMethod->performPayment(total);
 
         double newBonus = 0;
         newBonus = (Total * 0.01);
@@ -104,7 +121,9 @@ void ShoppingCart::CanselOrder() {
     if (this->productToPurchase.empty()) { cout << "the cart is empty , no need to cansel order"; return; }
     
     this->productToPurchase.clear();
-    this->paymentMethod = nullptr;
+    this->total = 0;
+    this->sizeofcart = 0;
+    this->setBonusNotUsed();
 	
 }
 
@@ -199,4 +218,16 @@ void ShoppingCart::showInvoice() {
     cout << "\n********************************************" << endl;
     cout << "*     Thank you for your purchase!         *" << endl;
     cout << "********************************************\n" << endl;
+}
+
+
+int ShoppingCart::size() {
+    return this->sizeofcart;
+}
+bool ShoppingCart::empty() {
+    if (this->sizeofcart < 1) { return true; }
+    else { return false; }
+}
+double ShoppingCart::getTotal() {
+    return this->total;
 }
