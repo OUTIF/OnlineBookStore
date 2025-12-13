@@ -10,15 +10,18 @@ CreditCard::CreditCard(int Amount,long Number, string Expdata, string Type) {
 CreditCard::~CreditCard() {
 }
 
-void CreditCard::performPayment(){
-
-	if (this->amount < 0) {
-		cout << "There is no enough money to perform the payment;\n";
-	}
-	else {
-		cout << "The payment performed using Credit card.\n";
-	}
-
+bool CreditCard::performPayment(double paymentAmount){
+		if (this->amount < paymentAmount) {
+			cout << "There is no enough money to perform the payment;\n";
+			return false;
+		}
+		else {
+			this->amount -= paymentAmount;  // DEDUCT THE MONEY
+			cout << "The payment performed using Credit card.\n";
+			cout << "Remaining balance: $" << this->amount << "\n";
+			return true;
+		}
+	
 }
 
 long CreditCard::getNumber() {
