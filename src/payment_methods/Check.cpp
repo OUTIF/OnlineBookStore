@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Check::Check(int Amount,string Name,string BankId) {
+Check::Check(double Amount,string Name,string BankId) {
 	this->amount = Amount;
 	this->name = Name;
 	this->bankID = BankId;
@@ -13,14 +13,16 @@ Check::~Check() {
 
 }
 
-void Check::performPayment() {
-
-	if (this->amount < 0) {
+bool Check::performPayment(double paymentAmount) {
+	if (this->amount < paymentAmount) {
 		cout << "There is no enough money to perform the payment;\n";
+		return false;
 	}
-
 	else {
+		this->amount -= paymentAmount;
 		cout << "The payment performed using check.\n";
+		cout << "Remaining balance: $" << this->amount << "\n";
+		return true;
 	}
 }
 
