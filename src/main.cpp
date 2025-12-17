@@ -40,7 +40,7 @@ int main() {
     Customer admin(0, "Yusuf", "Antalya/konyaali/hurma", "+964 7711839891", 0, "yusuf@gmail.com", "admin", "admin00"); // ADMIN
     Customer cutomer1(1, "ibrahim", "adana", "+90 5343414113", 50, "kutuk@gmail.com", "ibrahim01", "kutuk");
     Customer cutomer2(2, "alper", "malatya", "+90 5518325535", 50, "alper@gmail.com", "alper", "guzel");
-    Customer customer3(3, "Asmaa", "kirkuk", "+90 65113511355", 100, "kurdistan@gmail.com", "relktv", "1220");
+    Customer customer3(3, "Asmaa", "kirkuk", "+90 65113511355", 100, "asmaa@gmail.com", "relktv", "1220");
 
     
 
