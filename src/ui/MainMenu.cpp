@@ -2,6 +2,7 @@
 #include "Magazine.h"
 #include "MusicCD.h"
 #include "Book.h"
+#include <iomanip>
 
 CustomerMenu::CustomerMenu(vector<Customer>* customers)
     : customers(customers) {
@@ -11,11 +12,17 @@ void CustomerMenu::showMenu() {
     bool back = false;
 
     while (!back) {
-        cout << "\n--- CUSTOMER MENU ---\n"
-            << "1. Add Customer\n"
-            << "2. List Customers\n"
-            << "3. Back\n"
-            << "Choose: ";
+        cout << "\n";
+        cout << "+===================================+\n";
+        cout << "|       CUSTOMER MANAGEMENT         |\n";
+        cout << "+===================================+\n";
+        cout << "|                                   |\n";
+        cout << "|  1. > Add Customer                |\n";
+        cout << "|  2. > List Customers              |\n";
+        cout << "|  3. > Back                        |\n";
+        cout << "|                                   |\n";
+        cout << "+===================================+\n";
+        cout << "\nChoose an option: ";
 
         int choice = readInt(1, 3);
 
@@ -135,14 +142,21 @@ void CustomerMenu::addCustomer() {
 }
 
 void CustomerMenu::listCustomers() {
-    cout << "\n--- CUSTOMER LIST ---\n";
+    cout << "\n";
+    cout << "+===============================================================+\n";
+    cout << "|                        CUSTOMER LIST                          |\n";
+    cout << "+===============================================================+\n";
+    cout << "| ID   | Name            | Username        | Bonus            |\n";
+    cout << "+------+-----------------+-----------------+------------------+\n";
 
     for (auto& c : *customers) {
-        cout << "ID: " << c.getCustomerID()
-            << " | Name: " << c.getName()
-            << " | Username: " << c.getUsername()
-            << " | Bonus: " << c.getBonus() << "\n";
+        cout << "| " << setw(4) << left << c.getCustomerID()
+            << " | " << setw(15) << left << c.getName()
+            << " | " << setw(15) << left << c.getUsername()
+            << " | " << setw(16) << left << c.getBonus() << " |\n";
     }
+
+    cout << "+===============================================================+\n";
 }
 
 
@@ -165,13 +179,19 @@ void ShoppingMenu::showMenu() {
     bool back = false;
 
     while (!back) {
-        cout << "\n=== SHOPPING MENU ===\n"
-            << "1. Login / Logout\n"
-            << "2. Product Operations\n"
-            << "3. Cart\n"
-            << "4. Bonus & Payment\n"
-            << "5. Back\n"
-            << "Choose: ";
+        cout << "\n";
+        cout << "+===================================+\n";
+        cout << "|          SHOPPING MENU            |\n";
+        cout << "+===================================+\n";
+        cout << "|                                   |\n";
+        cout << "|  1. > Login / Logout              |\n";
+        cout << "|  2. > Product Operations          |\n";
+        cout << "|  3. > Cart                        |\n";
+        cout << "|  4. > Bonus & Payment             |\n";
+        cout << "|  5. > Back                        |\n";
+        cout << "|                                   |\n";
+        cout << "+===================================+\n";
+        cout << "\nChoose an option: ";
 
         int choice = readInt(1, 6);
 
@@ -196,15 +216,16 @@ int ShoppingMenu::readInt(int min, int max) {
 }
 
 void ShoppingMenu::loginLogout() {
-   
-    cout << "\n-------------------------------------\n";
+    cout << "\n";
+    cout << "+===================================+\n";
     cout << "|          Login-Logout             |\n";
-    cout << "-------------------------------------\n";
+    cout << "+===================================+\n\n";
 
     if (this->activeCustomer != nullptr) {
         // Logout
         this->activeCustomer = nullptr;
-        cout << "\n------>>Logged out successfully<<------\n";
+        cout << "  >> Logged out successfully <<\n\n";
+        cout << "+===================================+\n";
 
         // Clean up the cart
         if (this->cart != nullptr) {
@@ -212,45 +233,61 @@ void ShoppingMenu::loginLogout() {
             this->cart = nullptr;
         }
     }
-    else { 
-        cout << "\n------>>Login<<------\n";
+    else {
+        cout << "  >> Login <<\n\n";
         string user;
         string pass;
-        cout << "UserName:";
+        cout << "  Username: ";
         cin >> user;
-        cout << "Password:";
+        cout << "  Password: ";
         cin >> pass;
 
         for (auto& c : *this->customers) {
-            if (c.checkAccount(user,pass)) {
+            if (c.checkAccount(user, pass)) {
                 this->activeCustomer = &c;
-                cout << "Welcom '" << user <<"' You have Loged in successfully\n" << endl;
+                cout << "\n";
+                cout << "+===================================+\n";
+                cout << "|  Welcome  " << setw(15) << left << user << "         |\n";
+                cout << "|  You have logged in successfully  |\n";
+                cout << "+===================================+\n";
                 this->cart = new ShoppingCart(nullptr, this->activeCustomer);
-                return;  
-            }   
-            
+                return;
+            }
         }
-        if (this->activeCustomer == nullptr) { cout << "No such a user or your password or username is wrong!\n"; }
-    }
 
+        if (this->activeCustomer == nullptr) {
+            cout << "\n";
+            cout << "+===================================+\n";
+            cout << "|              ERROR                |\n";
+            cout << "+===================================+\n";
+            cout << "|  Invalid username or password!    |\n";
+            cout << "+===================================+\n";
+        }
+    }
 }
 
 void ShoppingMenu::productOperations() {
     if (this->activeCustomer == nullptr) {
-        cout << "You are not logged in. Please login first.\n";
+        cout << " >> You are not logged in. Please login first !!\n";
         return;
     }
 
     bool back = false;
 
     while (!back) {
-        cout << "\n=== PRODUCT CATEGORIES ===\n"
-            << "1. Magazines \n"
-            << "2. Music CDs \n"
-            << "3. Books \n"
-            << "4. View All Products\n"
-            << "5. Back to Shopping Menu\n"
-            << "Choose: ";
+        cout << "\n";
+        cout << "+===================================+\n";
+        cout << "|       PRODUCT CATEGORIES          |\n";
+        cout << "+===================================+\n";
+        cout << "|                                   |\n";
+        cout << "|  1. > Magazines                   |\n";
+        cout << "|  2. > Music CDs                   |\n";
+        cout << "|  3. > Books                       |\n";
+        cout << "|  4. > View All Products           |\n";
+        cout << "|  5. > Back to Shopping Menu       |\n";
+        cout << "|                                   |\n";
+        cout << "+===================================+\n";
+        cout << "\nChoose an option: ";
 
         int categoryChoice = readInt(1, 5);
 
@@ -262,51 +299,85 @@ void ShoppingMenu::productOperations() {
         // Display products by category
         switch (categoryChoice) {
         case 1: // Magazines (IDs starting with 1)
-            cout << "\n--- MAGAZINES ---\n";
+            cout << "\n";
+            cout << "+===============================================================+\n";
+            cout << "|                           MAGAZINES                           |\n";
+            cout << "+===============================================================+\n";
+            cout << "| ID   | Name                              | Price              |\n";
+            cout << "+------+-----------------------------------+--------------------+\n";
             for (auto& item : *this->products) {
                 int id = item.getID();
                 if (id >= 1000 && id < 2000) {  // IDs 1xxx
-                    item.printProperties();
+                    cout << "| " << setw(4) << left << id
+                        << " | " << setw(33) << left << item.getName()
+                        << " | $" << setw(17) << left << item.getPrice() << " |\n";
                 }
             }
+            cout << "+===============================================================+\n";
             break;
 
         case 2: // Music CDs (IDs starting with 2)
-            cout << "\n--- MUSIC CDs ---\n";
+            cout << "\n";
+            cout << "+===============================================================+\n";
+            cout << "|                           MUSIC CDs                           |\n";
+            cout << "+===============================================================+\n";
+            cout << "| ID   | Name                              | Price              |\n";
+            cout << "+------+-----------------------------------+--------------------+\n";
             for (auto& item : *this->products) {
                 int id = item.getID();
                 if (id >= 2000 && id < 3000) {  // IDs 2xxx
-                    item.printProperties();
+                    cout << "| " << setw(4) << left << id
+                        << " | " << setw(33) << left << item.getName()
+                        << " | $" << setw(17) << left << item.getPrice() << " |\n";
                 }
             }
+            cout << "+===============================================================+\n";
             break;
 
         case 3: // Books (IDs starting with 3)
-            cout << "\n--- BOOKS ---\n";
+            cout << "\n";
+            cout << "+===============================================================+\n";
+            cout << "|                            BOOKS                              |\n";
+            cout << "+===============================================================+\n";
+            cout << "| ID   | Name                              | Price              |\n";
+            cout << "+------+-----------------------------------+--------------------+\n";
             for (auto& item : *this->products) {
                 int id = item.getID();
-                if (id >= 3000 && id < 4000) {  // IDs 3xxx                 
-                    item.printProperties();
+                if (id >= 3000 && id < 4000) {  // IDs 3xxx
+                    cout << "| " << setw(4) << left << id
+                        << " | " << setw(33) << left << item.getName()
+                        << " | $" << setw(17) << left << item.getPrice() << " |\n";
                 }
             }
+            cout << "+===============================================================+\n";
             break;
 
         case 4: // All Products
-            cout << "---------------All Products---------------";
+            cout << "\n";
+            cout << "+===============================================================+\n";
+            cout << "|                            Products                           |\n";
+            cout << "+===============================================================+\n";
+            cout << "| ID   | Name                              | Price              |\n";
+            cout << "+------+-----------------------------------+--------------------+\n";
             for (auto& item : *this->products) {
-                cout << endl;
-                item.printProperties();
+                int id = item.getID();
+                    cout << "| " << setw(4) << left << id
+                        << " | " << setw(33) << left << item.getName()
+                        << " | $" << setw(17) << left << item.getPrice() << " |\n";
+                
             }
+            cout << "+===============================================================+\n";
             break;
+            
         }
 
         cout << endl;
 
-        // Add products to cart
-        cout << "Enter product ID to add to cart (or -1 to go back):\n";
+        
 
         while (true) {
-            cout << "ID of product: ";
+            // Add products to cart
+            cout << "Enter product ID to add to cart (or -1 to go back):\n";
             int p;
             cin >> p;
 
@@ -318,7 +389,9 @@ void ShoppingMenu::productOperations() {
             bool found = false;
             for (auto& item : *this->products) {
                 if (p == item.getID()) {
-                    cout << item.getName() << " has been added to the cart\n";
+                    cout << "+===============================================================+\n";
+                    cout << "|    "<<item.getName()<<"Have been added to the cart.     |\n";
+                    cout << "+===============================================================+\n";
                     this->cart->addProduct(&item);
                     found = true;
                     break;
@@ -341,52 +414,75 @@ void ShoppingMenu::cartOperations() {
     bool back = false;
 
     while (!back) {
-        cout << "\n-------------------------------------\n";
-        cout << "|          SHOPPING CART             |\n";
-        cout << "-------------------------------------\n";
+        cout << "\n";
+        cout << "+===================================+\n";
+        cout << "|          SHOPPING CART            |\n";
+        cout << "+===================================+\n";
 
         // Display current cart contents
-        cout << "\n--- Current Cart Items ---\n";
-      
-        if (this->cart == nullptr) {
-            cout << "Your cart is empty.\n";
+        cout << "\n";
+        cout << "+===================================+\n";
+        cout << "|       CURRENT CART ITEMS          |\n";
+        cout << "+===================================+\n\n";
+
+        if (this->cart == nullptr || this->cart->empty()) {
+            cout << "  Your cart is empty.\n";
         }
         else {
             this->cart->printProduct();  // Display all products in cart
         }
 
         // Cart operations menu
-        cout << "\n=== CART OPERATIONS ===\n"
-            << "1. Add Product to Cart\n"
-            << "2. View All Available Products\n"
-            << "3. Remove Product from Cart\n"
-            << "4. Clear Cart (Cancel Order)\n"
-            << "5. Proceed to Bonus & Payment\n"
-            << "6. Back to Shopping Menu\n"
-            << "Choose: ";
+        cout << "\n";
+        cout << "+===================================+\n";
+        cout << "|        CART OPERATIONS            |\n";
+        cout << "+===================================+\n";
+        cout << "|                                   |\n";
+        cout << "|  1. > Add Product to Cart         |\n";
+        cout << "|  2. > View All Available Products |\n";
+        cout << "|  3. > Remove Product from Cart    |\n";
+        cout << "|  4. > Clear Cart (Cancel Order)   |\n";
+        cout << "|  5. > Proceed to Bonus & Payment  |\n";
+        cout << "|  6. > Back to Shopping Menu       |\n";
+        cout << "|                                   |\n";
+        cout << "+===================================+\n";
+        cout << "\nChoose an option: ";
 
         int choice = readInt(1, 6);
 
         switch (choice) {
         case 1: {
             productOperations();
+            break;
         }
 
-        case 2: {
-            // View all products
-            cout << "\n--- Available Products ---\n";
+        case 2: { // All Products
+            cout << "\n";
+            cout << "+===============================================================+\n";
+            cout << "|                            Products                           |\n";
+            cout << "+===============================================================+\n";
+            cout << "| ID   | Name                              | Price              |\n";
+            cout << "+------+-----------------------------------+--------------------+\n";
             for (auto& item : *this->products) {
-                cout << endl;
-                item.printProperties();
-                cout << endl;
+                int id = item.getID();
+                cout << "| " << setw(4) << left << id
+                    << " | " << setw(33) << left << item.getName()
+                    << " | $" << setw(17) << left << item.getPrice() << " |\n";
+
             }
+            cout << "+===============================================================+\n";
+            cout << endl;
             break;
-            
+
         }
+
+             
+        
+        
 
         case 3: {
             // Remove product from cart
-            if (this->cart==nullptr) {
+            if (this->cart == nullptr) {
                 cout << "Cart is empty. Nothing to remove.\n";
                 break;
             }
@@ -418,7 +514,7 @@ void ShoppingMenu::cartOperations() {
 
         case 4: {
             // Clear entire cart - Cancel Order
-            if (this->cart==nullptr) {
+            if (this->cart == nullptr) {
                 cout << "Cart is already empty.\n";
             }
             else {
@@ -439,7 +535,7 @@ void ShoppingMenu::cartOperations() {
 
         case 5: {
             // Proceed to Bonus & Payment
-            if (this->cart==nullptr) {
+            if (this->cart == nullptr) {
                 cout << "Your cart is empty. Add items before proceeding to payment.\n";
             }
             else {
@@ -482,33 +578,45 @@ void ShoppingMenu::bonusPaymentMenu() {
             return;
         }
 
-        cout << "\n===============================================\n";
-        cout << "|       BONUS & PAYMENT MENU                  |\n";
-        cout << "===============================================\n";
+        cout << "\n";
+        cout << "+===================================+\n";
+        cout << "|       BONUS & PAYMENT MENU        |\n";
+        cout << "+===================================+\n";
 
         cout << "\n--- Cart Summary ---\n";
         this->cart->printProduct();
         cout << "\nTotal Amount: $" << this->cart->getTotal() << "\n";
 
-        cout << "\n=== OPTIONS ===\n"
-            << "1. Set/Change Payment Method\n"
-            << "2. View Payment Details\n"
-            << "3. Manage Bonus Points\n"
-            << "4. Complete Purchase\n"
-            << "5. Back to Cart\n"
-            << "Choose: ";
+        cout << "\n";
+        cout << "+===================================+\n";
+        cout << "|            OPTIONS                |\n";
+        cout << "+===================================+\n";
+        cout << "|                                   |\n";
+        cout << "|  1. > Set/Change Payment Method   |\n";
+        cout << "|  2. > View Payment Details        |\n";
+        cout << "|  3. > Manage Bonus Points         |\n";
+        cout << "|  4. > Complete Purchase           |\n";
+        cout << "|  5. > Back to Cart                |\n";
+        cout << "|                                   |\n";
+        cout << "+===================================+\n";
+        cout << "\nChoose an option: ";
 
         int choice = readInt(1, 5);
 
         switch (choice) {
 
         case 1: {
-            cout << "\n--- Select Payment Method ---\n";
-            cout << "1. Cash\n";
-            cout << "2. Credit Card\n";
-            cout << "3. Check\n";
-            cout << "Choose: ";
-
+            cout << "\n";
+            cout << "+===================================+\n";
+            cout << "|      SELECT PAYMENT METHOD        |\n";
+            cout << "+===================================+\n";
+            cout << "|                                   |\n";
+            cout << "|  1. > Cash                        |\n";
+            cout << "|  2. > Credit Card                 |\n";
+            cout << "|  3. > Check                       |\n";
+            cout << "|                                   |\n";
+            cout << "+===================================+\n";
+            cout << "\nChoose an option: ";
             int paymentChoice = readInt(1, 3);
 
             Payment* oldPayment = this->cart->getPaymentMethod();
@@ -660,10 +768,10 @@ void ShoppingMenu::bonusPaymentMenu() {
             }
 
             double finalTotal = subtotal - bonusDiscount;
-
-            cout << "\n===============================================\n";
-            cout << "|          PURCHASE SUMMARY                   |\n";
-            cout << "===============================================\n";
+            cout << "\n";
+            cout << "+===================================+\n";
+            cout << "|        PURCHASE SUMMARY           |\n";
+            cout << "+===================================+\n\n";
 
             this->cart->printProduct();
 
@@ -788,77 +896,122 @@ void MainMenu::run() {
 void MainMenu::browseProducts() {
     bool back = false;
 
-    while (!back) {
-        cout << "\n=== PRODUCT CATEGORIES ===\n"
-            << "1. Magazines\n"
-            << "2. Music CDs\n"
-            << "3. Books\n"
-            << "4. View All Products\n"
-            << "5. Back to Main Menu\n"
-            << "Choose: ";
+        while (!back) {
+            cout << "\n";
+            cout << "+===================================+\n";
+            cout << "|       PRODUCT CATEGORIES          |\n";
+            cout << "+===================================+\n";
+            cout << "|                                   |\n";
+            cout << "|  1. > Magazines                   |\n";
+            cout << "|  2. > Music CDs                   |\n";
+            cout << "|  3. > Books                       |\n";
+            cout << "|  4. > View All Products           |\n";
+            cout << "|  5. > Back to Shopping Menu       |\n";
+            cout << "|                                   |\n";
+            cout << "+===================================+\n";
+            cout << "\nChoose an option: ";
 
-        int categoryChoice = readInt(1, 5);
+            int categoryChoice = readInt(1, 5);
 
-        if (categoryChoice == 5) {
-            cout << "Returning to Main Menu...\n";
-            return;
-        }
+            if (categoryChoice == 5) {
+                cout << "Returning to Shopping Menu...\n";
+                return;
+            }
 
-        // Display products by category
-        switch (categoryChoice) {
-        case 1: // Magazines (IDs starting with 1)
-            cout << "\n--- MAGAZINES ---\n";
-            for (auto& item : *this->products) {
-                int id = item.getID();
-                if (id >= 1000 && id < 2000) {  // IDs 1xxx
-                    item.printProperties();
+            // Display products by category
+            switch (categoryChoice) {
+            case 1: // Magazines (IDs starting with 1)
+                cout << "\n";
+                cout << "+===============================================================+\n";
+                cout << "|                           MAGAZINES                           |\n";
+                cout << "+===============================================================+\n";
+                cout << "| ID   | Name                              | Price              |\n";
+                cout << "+------+-----------------------------------+--------------------+\n";
+                for (auto& item : *this->products) {
+                    int id = item.getID();
+                    if (id >= 1000 && id < 2000) {  // IDs 1xxx
+                        cout << "| " << setw(4) << left << id
+                            << " | " << setw(33) << left << item.getName()
+                            << " | $" << setw(17) << left << item.getPrice() << " |\n";
+                    }
                 }
-            }
-            break;
+                cout << "+===============================================================+\n";
+                break;
 
-        case 2: // Music CDs (IDs starting with 2)
-            cout << "\n--- MUSIC CDs ---\n";
-            for (auto& item : *this->products) {
-                int id = item.getID();
-                if (id >= 2000 && id < 3000) {  // IDs 2xxx
-                    item.printProperties();
+            case 2: // Music CDs (IDs starting with 2)
+                cout << "\n";
+                cout << "+===============================================================+\n";
+                cout << "|                           MUSIC CDs                           |\n";
+                cout << "+===============================================================+\n";
+                cout << "| ID   | Name                              | Price              |\n";
+                cout << "+------+-----------------------------------+--------------------+\n";
+                for (auto& item : *this->products) {
+                    int id = item.getID();
+                    if (id >= 2000 && id < 3000) {  // IDs 2xxx
+                        cout << "| " << setw(4) << left << id
+                            << " | " << setw(33) << left << item.getName()
+                            << " | $" << setw(17) << left << item.getPrice() << " |\n";
+                    }
                 }
-            }
-            break;
+                cout << "+===============================================================+\n";
+                break;
 
-        case 3: // Books (IDs starting with 3)
-            cout << "\n--- BOOKS ---\n";
-            for (auto& item : *this->products) {
-                int id = item.getID();
-                if (id >= 3000 && id < 4000) {  // IDs 3xxx
-                    item.printProperties();
+            case 3: // Books (IDs starting with 3)
+                cout << "\n";
+                cout << "+===============================================================+\n";
+                cout << "|                            BOOKS                              |\n";
+                cout << "+===============================================================+\n";
+                cout << "| ID   | Name                              | Price              |\n";
+                cout << "+------+-----------------------------------+--------------------+\n";
+                for (auto& item : *this->products) {
+                    int id = item.getID();
+                    if (id >= 3000 && id < 4000) {  // IDs 3xxx
+                        cout << "| " << setw(4) << left << id
+                            << " | " << setw(33) << left << item.getName()
+                            << " | $" << setw(17) << left << item.getPrice() << " |\n";
+                    }
                 }
-            }
-            break;
+                cout << "+===============================================================+\n";
+                break;
 
-        case 4: // All Products
-            cout << "---------------All Products---------------";
-            for (auto& item : *this->products) {
-                cout << endl;
-                item.printProperties();
-            }
-            break;
-        
-        }
+            case 4: // All Products
+                cout << "\n";
+                cout << "+===============================================================+\n";
+                cout << "|                            Products                           |\n";
+                cout << "+===============================================================+\n";
+                cout << "| ID   | Name                              | Price              |\n";
+                cout << "+------+-----------------------------------+--------------------+\n";
+                for (auto& item : *this->products) {
+                    int id = item.getID();
+                    cout << "| " << setw(4) << left << id
+                        << " | " << setw(33) << left << item.getName()
+                        << " | $" << setw(17) << left << item.getPrice() << " |\n";
 
-        cout << "\nPress Enter to continue...";
+                }
+                cout << "+===============================================================+\n";
+                break;
+
+            }
+
+            cout << endl;        cout << "\nPress Enter to continue...";
         cin.ignore();
         cin.get();
     }
 }
 
 void MainMenu::showMainMenu() {
-    cout << "\n=== MAIN MENU ===\n"
-        << "1. Customer\n"
-        << "2. Products\n"
-        << "3. Shopping\n"
-        << "4. Quit\n"
-        << "Choose: ";
+    cout << "\n";
+    cout << "+===================================+\n";
+    cout << "|            MAIN MENU              |\n";
+    cout << "+===================================+\n";
+    cout << "|                                   |\n";
+    cout << "|  1. > Customer                    |\n";
+    cout << "|  2. > Products                    |\n";
+    cout << "|  3. > Shopping                    |\n";
+    cout << "|  4. > Quit                        |\n";
+    cout << "|                                   |\n";
+    cout << "+===================================+\n";
+    cout << "\nChoose an option: ";
 }
 
 int MainMenu::readInt(int min, int max) {
