@@ -1,4 +1,5 @@
 #include "ShoppingCart.h"
+#include <iomanip>
 
 using namespace std;
 
@@ -12,7 +13,11 @@ ShoppingCart::ShoppingCart(Payment* payment, Customer* customer, bool willusebon
 }
 
 ShoppingCart::~ShoppingCart() {
-   
+    if (paymentMethod != nullptr) {
+        delete paymentMethod;
+        paymentMethod = nullptr;
+    }
+
 }
 
 
@@ -85,7 +90,7 @@ void ShoppingCart::placeOrder() {
     // check if the customer have a bonus in his account and he wants to use it
 	double discount=0;
 	if ((this->customer->getBonus() > 0) && (this->isBonusUsed)) {
-		discount = this->customer->getBonus();
+		discount = this->customer->getBonus()*0.1;
 		if (discount > Total) { discount = Total; }
 		Total -=discount;
 	   	this->customer->useBonus();
@@ -95,14 +100,14 @@ void ShoppingCart::placeOrder() {
     if (Total > this->paymentMethod->getAmount()) { cout << "---->There is No enough money to purchase.<----\n"; return; }
     else {
         cout << "\n\n\n\n=========================  ORDER IS BING PROCESSED  ========================\n" << endl;
-        this->paymentMethod->performPayment(total);
+        this->paymentMethod->performPayment(Total);
 
         double newBonus = 0;
         newBonus = (Total * 0.01);
         customer->addBonus(newBonus);
         cout << "\nOrder placed successfully!" << endl;
-        cout << "Discount applied: " << discount << " TL" << endl;
-        cout << "New bonus earned: " << newBonus << " TL" << endl;
+        cout << "Discount applied: " << discount << " $" << endl;
+        cout << "New bonus earned: " << newBonus << " $" << endl;
         cout << "\n============================================================================" << endl;
 
         this->showInvoice();
@@ -126,54 +131,95 @@ void ShoppingCart::CanselOrder() {
     this->setBonusNotUsed();
 	
 }
+// improvedd
 
 void ShoppingCart::printProduct() {
     if (productToPurchase.empty()) {
-        cout << "Shopping cart is empty!" << endl;
+        cout << "\n";
+        cout << "+===============================================================+\n";
+        cout << "|                    SHOPPING CART IS EMPTY                     |\n";
+        cout << "+===============================================================+\n";
         return;
     }
 
-    cout << "\n========== SHOPPING CART ==========" << endl;
+    cout << "\n";
+    cout << "+====================================================================================+\n";
+    cout << "|                              YOUR SHOPPING CART                                    |\n";
+    cout << "+====================================================================================+\n";
+    cout << "| #  | Product ID | Product Name              | Price    | Qty | Subtotal          |\n";
+    cout << "+----+------------+---------------------------+----------+-----+-------------------+\n";
+
     double total = 0;
     int itemNumber = 1;
 
     for (auto& item : productToPurchase) {
-        cout << "\nItem #" << itemNumber++ << ":" << endl;
-        item.getInfo();
+        Product* prod = item.getProduct();
+        int qty = item.getQuantity();
+        double price = prod->getPrice();
+        double subtotal = price * qty;
 
-        double subtotal = item.getProduct()->getPrice() * item.getQuantity();
-        cout << "Subtotal: " << subtotal << " TL" << endl<<endl;
+        // Format the output nicely
+        cout << "| " << setw(2) << left << itemNumber++
+            << " | " << setw(10) << left << prod->getID()
+            << " | " << setw(25) << left << prod->getName().substr(0, 25)
+            << " | $" << setw(7) << right << fixed << setprecision(2) << price
+            << " | " << setw(3) << right << qty
+            << " | $" << setw(16) << right << fixed << setprecision(2) << subtotal << " |\n";
+
         total += subtotal;
     }
 
-    cout << "\n====================================" << endl;
-    cout << "TOTAL: " << total << " TL" << endl;
-    cout << "====================================" << endl;
+    cout << "+----+------------+---------------------------+----------+-----+-------------------+\n";
+    cout << "|                                                    CART TOTAL: $"
+        << setw(16) << right << fixed << setprecision(2) << total << " |\n";
+    cout << "+====================================================================================+\n";
+
+    // Show bonus discount if applicable
+    if (this->isBonusUsed && this->customer != nullptr && this->customer->getBonus() > 0) {
+        double bonusDiscount = this->customer->getBonus() * 0.1;
+        if (bonusDiscount > total) {
+            bonusDiscount = total;
+        }
+        double finalTotal = total - bonusDiscount;
+
+        cout << "|                                                 Bonus Discount: -$"
+            << setw(15) << right << fixed << setprecision(2) << bonusDiscount << " |\n";
+        cout << "|                                                    FINAL TOTAL: $"
+            << setw(16) << right << fixed << setprecision(2) << finalTotal << " |\n";
+        cout << "+====================================================================================+\n";
+    }
 }
+
 
 void ShoppingCart::showInvoice() {
     if (productToPurchase.empty()) {
-        cout << "No invoice to show. Cart is empty! , cant show unvoice" << endl;
+        cout << "\n+===============================================================+\n";
+        cout << "|              NO INVOICE - CART IS EMPTY                       |\n";
+        cout << "+===============================================================+\n";
         return;
     }
 
-    cout << "\n\n\n-------------------------------------------" << endl;
-    cout << "|          ONLINE BOOKSTORE INVOICE        |" << endl;
-    cout << "-------------------------------------------" << endl<<"\n";
+    cout << "\n\n";
+    cout << "+====================================================================================+\n";
+    cout << "|                                                                                    |\n";
+    cout << "|                          ONLINE BOOKSTORE INVOICE                                  |\n";
+    cout << "|                                                                                    |\n";
+    cout << "+====================================================================================+\n";
 
-    // Customer details
+    // Customer Information
     if (customer != nullptr) {
-        cout << "\nCustomer Information:" << endl;
-        cout << "Name: " << customer->getName() << endl;
-        cout << "ID: " << customer->getCustomerID() << endl;
-        cout << "Email: " << customer->getEmail() << endl;
-        cout << "Phone: " << customer->getPhone() << endl;
+        cout << "|                                                                                    |\n";
+        cout << "|  CUSTOMER INFORMATION:                                                             |\n";
+        cout << "|  " << setw(82) << left << ("Name: " + customer->getName()) << "|\n";
+        cout << "|  " << setw(82) << left << ("Customer ID: " + to_string(customer->getCustomerID())) << "|\n";
+        cout << "|  " << setw(82) << left << ("Email: " + customer->getEmail()) << "|\n";
+        cout << "|  " << setw(82) << left << ("Phone: " + customer->getPhone()) << "|\n";
+        cout << "|                                                                                    |\n";
     }
 
-    // Product list
-    cout << "\n--------------------------------------------" << endl;
-    cout << "Items Purchased:" << endl;
-    cout << "--------------------------------------------" << endl;
+    cout << "+====================================================================================+\n";
+    cout << "| #  | Product ID | Product Name              | Price    | Qty | Total             |\n";
+    cout << "+----+------------+---------------------------+----------+-----+-------------------+\n";
 
     double subtotal = 0;
     int itemNumber = 1;
@@ -184,40 +230,61 @@ void ShoppingCart::showInvoice() {
         double price = prod->getPrice();
         double itemTotal = price * qty;
 
-        cout << itemNumber++ << ". " << prod->getName() << endl;
-        cout << "   ID: " << prod->getID() << endl;
-        cout << "   Price: " << price << " TL x " << qty << " = " << itemTotal << " TL" << endl;
+        cout << "| " << setw(2) << left << itemNumber++
+            << " | " << setw(10) << left << prod->getID()
+            << " | " << setw(25) << left << prod->getName().substr(0, 25)
+            << " | $" << setw(7) << right << fixed << setprecision(2) << price
+            << " | " << setw(3) << right << qty
+            << " | $" << setw(16) << right << fixed << setprecision(2) << itemTotal << " |\n";
 
         subtotal += itemTotal;
     }
 
-    // Calculations
-    cout << "\n--------------------------------------------" << endl;
-    cout << "Subtotal: " << subtotal << " TL" << endl;
+    cout << "+----+------------+---------------------------+----------+-----+-------------------+\n";
+    cout << "|                                                                                    |\n";
+    cout << "|  " << setw(70) << right << "Subtotal: "
+        << "$" << setw(8) << right << fixed << setprecision(2) << subtotal << "  |\n";
 
+    // Bonus discount
     double discount = 0;
-    if (isBonusUsed && customer != nullptr) {
-        discount = customer->getBonus();
+    if (isBonusUsed && customer != nullptr && customer->getBonus() > 0) {
+        discount = customer->getBonus() * 0.1;
         if (discount > subtotal) {
             discount = subtotal;
         }
-        cout << "Bonus Discount: -" << discount << " TL" << endl;
+        cout << "|  " << setw(70) << right << "Bonus Discount: "
+            << "-$" << setw(7) << right << fixed << setprecision(2) << discount << "  |\n";
     }
 
-    double total = subtotal - discount;
-    cout << "--------------------------------------------" << endl;
-    cout << "TOTAL AMOUNT: " << total << " TL" << endl;
-    cout << "--------------------------------------------" << endl;
+    double finalTotal = subtotal - discount;
+    cout << "|  " << setw(82) << right << string(84, '-') << "|\n";
+    cout << "|  " << setw(70) << right << "FINAL TOTAL: "
+        << "$" << setw(8) << right << fixed << setprecision(2) << finalTotal << "  |\n";
+    cout << "|                                                                                    |\n";
 
-    // Payment info
+    // Payment information
     if (paymentMethod != nullptr) {
-        cout << "\nPayment Method:" << endl;
-        paymentMethod->getInfo();
+        cout << "+====================================================================================+\n";
+        cout << "|  PAYMENT INFORMATION:                                                              |\n";
+        cout << "|  " << setw(82) << left << ("Payment Amount: $" + to_string(paymentMethod->getAmount())) << "|\n";
+        cout << "|  Payment Status: COMPLETED                                                         |\n";
     }
 
-    cout << "\n********************************************" << endl;
-    cout << "*     Thank you for your purchase!         *" << endl;
-    cout << "********************************************\n" << endl;
+    // Bonus earned
+    if (customer != nullptr) {
+        int earnedBonus = (int)(subtotal * 0.01);
+        cout << "|                                                                                    |\n";
+        cout << "|  " << setw(82) << left << ("Bonus Points Earned: " + to_string(earnedBonus)) << "|\n";
+        cout << "|  " << setw(82) << left << ("New Bonus Balance: " + to_string(customer->getBonus()) + " points") << "|\n";
+    }
+
+    cout << "|                                                                                    |\n";
+    cout << "+====================================================================================+\n";
+    cout << "|                                                                                    |\n";
+    cout << "|                       THANK YOU FOR YOUR PURCHASE!                                |\n";
+    cout << "|                     Visit us again at www.onlinebookstore.com                      |\n";
+    cout << "|                                                                                    |\n";
+    cout << "+====================================================================================+\n\n";
 }
 
 
