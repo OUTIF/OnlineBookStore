@@ -392,6 +392,7 @@ void ShoppingMenu::productOperations() {
 
         while (true) {
             // Add products to cart
+
             cout << "Enter product ID to add to cart (or -1 to go back):\n";
             int p;
             cin >> p;
@@ -414,7 +415,7 @@ void ShoppingMenu::productOperations() {
             }
 
             if (!found) {
-                space();
+               
                 cout << "Invalid ID. Please try again.\n";
             }
         }
@@ -435,17 +436,17 @@ void ShoppingMenu::cartOperations() {
         
         cout << "\n";
         cout << "+===================================+\n";
-        cout << "|          SHOPPING CART            |\n";
+        cout << "|        SHOPPING CART MENU         |\n";
         cout << "+===================================+\n";
 
         // Display current cart contents
-        cout << "\n";
-        cout << "+===================================+\n";
-        cout << "|       CURRENT CART ITEMS          |\n";
-        cout << "+===================================+\n\n";
+        //cout << "\n";
+        //cout << "+===================================+\n";
+        //cout << "|       CURRENT CART ITEMS          |\n";
+        //cout << "+===================================+\n\n";
 
         if (this->cart == nullptr || this->cart->empty()) {
-            cout << "  Your cart is empty.\n";
+            cout << "~Your cart is empty.\n";
         }
         else {
             this->cart->printProduct();  // Display all products in cart
@@ -453,29 +454,39 @@ void ShoppingMenu::cartOperations() {
 
         // Cart operations menu
         cout << "\n";
-        cout << "+===================================+\n";
-        cout << "|        CART OPERATIONS            |\n";
-        cout << "+===================================+\n";
-        cout << "|                                   |\n";
-        cout << "|  1. > Add Product to Cart         |\n";
-        cout << "|  2. > View All Available Products |\n";
-        cout << "|  3. > Remove Product from Cart    |\n";
-        cout << "|  4. > Clear Cart (Cancel Order)   |\n";
-        cout << "|  5. > Proceed to Bonus & Payment  |\n";
-        cout << "|  6. > Back to Shopping Menu       |\n";
-        cout << "|                                   |\n";
-        cout << "+===================================+\n";
+        cout << "+======================================+\n";
+        cout << "|        CART OPERATIONS               |\n";
+        cout << "+======================================+\n";
+        cout << "|                                      |\n";
+        cout << "|  1. > Add Product to Cart            |\n";
+        cout << "|  2. > Remove one Product from Cart   |\n";
+        cout << "|  3. > View All Available Products    |\n";
+        cout << "|  4. > Remove Product from Cart       |\n";
+        cout << "|  5. > Clear Cart (Cancel Order)      |\n";
+        cout << "|  6. > Proceed to Bonus & Payment     |\n";
+        cout << "|  7. > Back to Shopping Menu          |\n";
+        cout << "|                                      |\n";
+        cout << "+======================================+\n";
         cout << "\nChoose an option: ";
 
-        int choice = readInt(1, 6);
+        int choice = readInt(1, 7);
 
         switch (choice) {
         case 1: {
             productOperations();
             break;
         }
+        
+        case 2: {
+            int p=0;
+            cout << "Please Enter the ID of the Product you want to remove:";
+            cin >> p;
+            this->cart->delete1Product(p);
 
-        case 2: { // All Products
+            break;
+        }
+
+        case 3: { // All Products
             cout << "\n";
             cout << "+===============================================================+\n";
             cout << "|                            Products                           |\n";
@@ -499,10 +510,10 @@ void ShoppingMenu::cartOperations() {
 
 
 
-        case 3: {
+        case 4: {
             // Remove product from cart
             if (this->cart == nullptr) {
-                cout << "Cart is empty. Nothing to remove.\n";
+                cout << "~Cart is empty. Nothing to remove.\n";
                 break;
             }
 
@@ -519,7 +530,7 @@ void ShoppingMenu::cartOperations() {
             for (auto& item : *this->products) {
                 if (productID == item.getID()) {
                     this->cart->removeProduct(&item);
-                    cout << item.getName() << " has been removed from the cart.\n";
+                    cout << item.getName() << "~has been removed from the cart.\n";
                     found = true;
                     break;
                 }
@@ -532,11 +543,11 @@ void ShoppingMenu::cartOperations() {
             break;
         }
 
-        case 4: {
+        case 5: {
             // Clear entire cart - Cancel Order
             if (this->cart == nullptr) {
                 space();
-                cout << "Cart is already empty.\n";
+                cout << "~Cart is already empty.\n";
             }
             else {
                 cout << "Are you sure you want to clear the entire cart? (yes/no): ";
@@ -545,7 +556,7 @@ void ShoppingMenu::cartOperations() {
 
                 if (confirm == "yes" || confirm == "Yes" || confirm == "YES") {
                     this->cart->CanselOrder();
-                    cout << "Cart has been cleared.\n";
+                    cout << "~Cart has been cleared.\n";
                 }
                 else {
                     cout << "Cancelled.\n";
@@ -554,10 +565,13 @@ void ShoppingMenu::cartOperations() {
             break;
         }
 
-        case 5: {
+        case 6: {
             // Proceed to Bonus & Payment
             if (this->cart == nullptr) {
-                cout << "Your cart is empty. Add items before proceeding to payment.\n";
+
+                cout << "+======================================================================+\n";
+                cout << "|   Error: Your cart is empty. Add items before proceeding to payment  |\n";
+                cout << "+======================================================================+\n";
             }
             else {
                 bonusPaymentMenu();
@@ -565,7 +579,7 @@ void ShoppingMenu::cartOperations() {
             break;
         }
 
-        case 6: {
+        case 7: {
             // Back to shopping menu
             back = true;
             cout << "Returning to Shopping Menu...\n";
@@ -573,7 +587,9 @@ void ShoppingMenu::cartOperations() {
         }
 
         default:
-            cout << "Invalid choice.\n";
+            cout << "+===================================+\n";
+            cout << "|       Error: Invalid Choice       |\n";
+            cout << "+===================================+\n";
             break;
         }
     }
@@ -584,13 +600,19 @@ void ShoppingMenu::bonusPaymentMenu() {
     space();
     if (this->activeCustomer == nullptr) {
         space();
-        cout << "You have to log in first.\n";
+        cout << "\n";
+        cout << "+===================================+\n";
+        cout << "|   Error: You Have To Login First  |\n";
+        cout << "+===================================+\n";
         return;
     }
 
     if (this->cart == nullptr || this->cart->empty()) {
         space();
-        cout << "Your cart is empty. Add items before proceeding to payment.\n";
+        cout << "\n";
+        cout << "+======================================================================+\n";
+        cout << "|   Error: Your cart is empty. Add items before proceeding to payment  |\n";
+        cout << "+======================================================================+\n";
         return;
     }
 
@@ -599,7 +621,10 @@ void ShoppingMenu::bonusPaymentMenu() {
     while (!backToCart) {
         if (this->cart == nullptr || this->cart->empty()) {
             space();
-            cout << "\nCart is empty. Returning to shopping menu.\n";
+            cout << endl;
+            cout << "+======================================================================+\n";
+            cout << "|      Error: Your cart is empty. Returning To The Shopping Menu       |\n";
+            cout << "+======================================================================+\n";
             return;
         }
 
@@ -607,10 +632,8 @@ void ShoppingMenu::bonusPaymentMenu() {
         cout << "+===================================+\n";
         cout << "|       BONUS & PAYMENT MENU        |\n";
         cout << "+===================================+\n";
-
-        cout << "\n--- Cart Summary ---\n";
         this->cart->printProduct();
-        cout << "\nTotal Amount: $" << this->cart->getTotal() << "\n";
+        cout << "\n Total Amount: $" << this->cart->getTotal() << "\n";
 
         cout << "\n";
         cout << "+===================================+\n";
@@ -657,12 +680,16 @@ void ShoppingMenu::bonusPaymentMenu() {
 
                 if (amount < this->cart->getTotal()) {
                     space();
-                    cout << "Insufficient cash amount! Need at least $" << this->cart->getTotal() << "\n";
+                    cout << "\n+======================================================================+\n";
+                    cout << "|    Insufficient cash amount! Need at least $"<<this->cart->getTotal()<<" | \n";
+                    cout << "+======================================================================+\n";
+                    
                     break;
                 }
 
                 newPayment = new Cash(amount);
                 paymentSet = true;
+
                 cout << "Cash payment method set successfully.\n";
                 break;
             }
@@ -678,7 +705,9 @@ void ShoppingMenu::bonusPaymentMenu() {
 
                 if (amount < this->cart->getTotal()) {
                     space();
-                    cout << "Insufficient amount! Need at least $" << this->cart->getTotal() << "\n";
+                    cout << "\n+======================================================================+\n";
+                    cout << "|    Insufficient cash amount! Need at least $" << this->cart->getTotal() << " | \n";
+                    cout << "+======================================================================+\n";
                     break;
                 }
 
@@ -707,7 +736,9 @@ void ShoppingMenu::bonusPaymentMenu() {
 
                 if (amount < this->cart->getTotal()) {
                     space();
-                    cout << "Insufficient check amount! Need at least $" << this->cart->getTotal() << "\n";
+                    cout << "\n+======================================================================+\n";
+                    cout << "|    Insufficient cash amount! Need at least $" << this->cart->getTotal() << " | \n";
+                    cout << "+======================================================================+\n";
                     break;
                 }
 
@@ -740,7 +771,9 @@ void ShoppingMenu::bonusPaymentMenu() {
                 this->cart->getPaymentMethod()->getInfo();
             }
             else {
-                cout << "No payment method set yet.\n";
+                cout << "\n+======================================================================+\n";
+                cout << "|           Error: No Payment Method Have been Set yet!                | \n";
+                cout << "+======================================================================+\n";
             }
             break;
         }
@@ -778,13 +811,17 @@ void ShoppingMenu::bonusPaymentMenu() {
         case 4: {
             if (this->cart == nullptr || this->cart->empty()) {
                 space();
-                cout << "\nERROR: Cart is empty!\n";
+                cout << "\n+======================================================================+\n";
+                cout << "|                     Error: Your cart is empty                         |\n";
+                cout << "+======================================================================+\n";
                 break;
             }
 
             if (this->cart->getPaymentMethod() == nullptr) {
                 space();
-                cout << "\nERROR: Please set a payment method before completing purchase.\n";
+                cout << "\n+======================================================================+\n";
+                cout << "|           Error: No Payment Method Have been Set yet!                  | \n";
+                cout << "+======================================================================+\n";
                 break;
             }
 
@@ -822,7 +859,7 @@ void ShoppingMenu::bonusPaymentMenu() {
                 cout << "Final Total:     $" << finalTotal << "\n";
             }
 
-            cout << "\n--- Payment Method ---\n";
+            cout << "\n$$$ Payment Method $$$\n";
             this->cart->getPaymentMethod()->getInfo();
 
             cout << "\nConfirm purchase? (yes/no): ";
@@ -832,8 +869,10 @@ void ShoppingMenu::bonusPaymentMenu() {
             if (confirm == "yes" || confirm == "Yes" || confirm == "YES") {
 
                 if (this->cart->getPaymentMethod()->getAmount() < finalTotal) {
-                    space();
-                    cout << "\nPayment failed! Insufficient funds.\n";
+                    
+                    cout << "\n+======================================================================+\n";
+                    cout << "|                  Payment failed! Insufficient funds!                  | \n";
+                    cout << "+======================================================================+\n";
                     cout << "Required: $" << finalTotal << "\n";
                     cout << "Available: $" << this->cart->getPaymentMethod()->getAmount() << "\n";
                     break;
@@ -841,7 +880,7 @@ void ShoppingMenu::bonusPaymentMenu() {
 
                 this->cart->getPaymentMethod()->performPayment(finalTotal);
 
-                cout << "\nPayment successful!\n";
+                cout << "\n~Payment successful!\n";
 
                 if (this->cart->getBonusactive() && bonusDiscount > 0) {
                     int usedBonus = (int)(bonusDiscount / 0.1);
@@ -855,14 +894,16 @@ void ShoppingMenu::bonusPaymentMenu() {
                 cout << "New bonus balance: " << this->activeCustomer->getBonus() << " points\n";
 
                 this->cart->showInvoice();
-                cout << "An email have been send to:" << this->activeCustomer->getEmail();
+                cout << "\n+======================================================================+\n";
+                cout << " An email have been send to : " << this->activeCustomer->getEmail()<<  "         \n";
+                cout << "+======================================================================+\n";
                 this->cart->CanselOrder();
 
           
                 
                 if (this->cart->getPaymentMethod() != nullptr) {
-                    cout << "\nYour payment method has been retained with remaining balance: $"
-                        << this->cart->getPaymentMethod()->getAmount() << "\n";
+                    cout << "\n\nYour payment method has been retained with remaining balance: $"
+                        << this->cart->getPaymentMethod()->getAmount() << "\n\n";
                 }
 
                 backToCart = true;
@@ -870,7 +911,16 @@ void ShoppingMenu::bonusPaymentMenu() {
             else {
                 cout << "Purchase cancelled.\n";
             }
-            break;
+            string ask;
+            cout << "Press Any KEY to return to the Cart Menu...";
+            cin >> ask;
+            // SHOWING THE Invoice MENU FOR A LONGER TIME
+            if (ask == "") {
+                break;
+            }
+            else {
+                break;
+            }
         }
 
         case 5: {
@@ -925,6 +975,16 @@ void MainMenu::run() {
 
         case 4:
             quit = true;
+            cout << "+================================================\n";
+            cout << "|         ONLINE BOOKSTORE - OOP PROJECT         |\n";
+            cout << "|                  GROUP NO: 5                   |\n";
+            cout << "|------------------------------------------------|\n";
+            cout << "| Yousif Hussein Jabbar Al-Gburi - 152120231144  |\n"; 
+            cout << "|           Ibrahim Kutuk - 152120211162         |\n";
+            cout << "|           Alper Guzel   - 152120231116         |\n";
+            cout << "+================================================+\n";
+
+            cout << "\n\nGoodBye...\n\n";
             break;
         }
     }
