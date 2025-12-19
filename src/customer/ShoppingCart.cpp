@@ -298,3 +298,25 @@ bool ShoppingCart::empty() {
 double ShoppingCart::getTotal() {
     return this->total;
 }
+
+void ShoppingCart::delete1Product(int id) {
+    for (auto i = this->productToPurchase.begin(); i != productToPurchase.end(); ++i) {
+        if (i->getProduct()->getID() == id) {
+            this->total -= i->getProduct()->getPrice();
+            this->sizeofcart -= 1;
+
+            if (i->getQuantity() > 1) {
+                i->setQuantity(i->getQuantity() - 1);
+            }
+            else {
+                productToPurchase.erase(i);
+            }
+            return;
+        }
+        else {
+            cout << "NO such an ID\n";
+            return;
+        }
+    }
+
+}
