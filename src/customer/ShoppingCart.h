@@ -30,6 +30,7 @@ public:
 	bool getBonusactive();
 	void addProduct(Product*);
 	void removeProduct(Product*);
+	void delete1Product(int);
 	void placeOrder();
 	void CanselOrder();
 	void printProduct();
