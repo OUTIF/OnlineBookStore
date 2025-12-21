@@ -1,4 +1,9 @@
+/*
 
+student name:ibrahim kütük
+student no:152120211162
+
+*/
 #include "MusicCD.h"
 #include <iostream>
 
@@ -25,11 +30,11 @@ void MusicCD::setType(string type) {
 }
 
 void MusicCD::printProperties() {
-    cout << "--- music CD Detials ---" << endl;
+    cout << "--- Muzik CD Detaylari ---" << endl;
     cout << "ID: " << getID() << endl;
-    cout << "name: " << getName() << endl;
-    cout << "price: " << getPrice() << " TL" << endl;
-    cout << "singer: " << singer << endl;
-    cout << "type: " << type << endl;
+    cout << "Isim: " << getName() << endl;
+    cout << "Fiyat: " << getPrice() << " TL" << endl;
+    cout << "Sarkici: " << singer << endl;
+    cout << "Tur: " << type << endl;
     cout << "--------------------------" << endl;
 }
