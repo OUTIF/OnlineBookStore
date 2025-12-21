@@ -1,3 +1,16 @@
+/*
+
+
+STUDENT NAME: YOUSIF HUSSEIN JABBAR AL-GBURI
+STUDENT NO  : 152120231144
+
+
+
+*/
+
+
+
+
 #include "MainMenu.h"
 #include "Magazine.h"
 #include "MusicCD.h"
@@ -8,7 +21,6 @@
 inline void space() {
     cout << string(50, '\n');
 }
-
 
 CustomerMenu::CustomerMenu(vector<Customer>* customers)
     : customers(customers) {
