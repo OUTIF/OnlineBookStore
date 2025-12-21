@@ -1,4 +1,12 @@
 
+/*
+
+student name:alper güzel
+student no:152120231116
+
+*/
+
+
 #include "Payment.h"
 
 using namespace std;
@@ -35,7 +43,7 @@ bool Payment::performPayment(double paymentAmount) {
 }
 
 void Payment::getInfo() {
-	cout << "--- Payment details ---" << endl;
+	cout << "--- Payment Details ---" << endl;
 	cout << "Amount: " << getAmount() << endl;
 	cout << "-----------------------" << endl;
  }
