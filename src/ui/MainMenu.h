@@ -1,18 +1,32 @@
+/*
+
+
+STUDENT NAME: YOUSIF HUSSEIN JABBAR AL-GBURI
+STUDENT NO  : 152120231144
+
+
+
+*/
+
+
+
 #pragma once
 
 #include <iostream>
 #include <vector>
 #include <string>
-
 #include "Customer.h"
 #include "ShoppingCart.h"
 #include "Product.h"
+#include "Payment.h"
+#include "Cash.h"
+#include "Check.h"
+#include "CreditCard.h"
 
 using namespace std;
 
 
-//   CUSTOMER MENU
-   
+    //Customer MENU
 class CustomerMenu {
 private:
     vector<Customer>* customers;
@@ -29,9 +43,7 @@ private:
 };
 
 
-
- //  SHOPPING MENU
- 
+//Shopping MENU
 class ShoppingMenu {
 private:
     vector<Customer>* customers;
@@ -55,15 +67,14 @@ private:
     void productOperations();
     void cartOperations();
     void bonusPaymentMenu();
-    void invoiceMenu();
+   // void invoiceMenu();
 };
 
 
-
-//   MAIN MENU
-
+// Main Menu
 class MainMenu {
 private:
+    double total;
     vector<Customer>* customers;
     vector<Product>* products;
     Customer* activeCustomer;
@@ -79,6 +90,7 @@ public:
         ShoppingCart* cart);
 
     void run();
+    void browseProducts();
 
 private:
     void showMainMenu();
