@@ -1,3 +1,15 @@
+/*
+
+
+STUDENT NAME: YOUSIF HUSSEIN JABBAR AL-GBURI
+STUDENT NO  : 152120231144
+
+
+
+*/
+
+
+
 #pragma once
 #include <string>
 using namespace std;
@@ -48,7 +60,7 @@ public:
 	string getPassword();
 	void setPassword(string);
 
-	bool checkAccount(string, string);  // Not figured
+	bool checkAccount(string, string); 
 
 	void addBonus(double);
 
