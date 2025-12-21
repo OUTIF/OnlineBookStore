@@ -1,3 +1,10 @@
+/*
+
+student name:ibrahim kütük
+student no:152120211162
+
+*/
+
 #include "Book.h"
 #include <iostream>
 
@@ -35,10 +42,10 @@ void Book::setPage(int page) {
 void Book::printProperties()  {
     cout << "--- Kitap Detaylari ---" << endl;
     cout << "ID: " << getID() << endl;
-    cout << "Isim: " << getName() << endl;
-    cout << "Fiyat: " << getPrice() << " TL" << endl;
-    cout << "Yazar: " << author << endl;
-    cout << "Yayinevi: " << publisher << endl;
-    cout << "Sayfa Sayisi: " << page << endl;
+    cout << "Name: " << getName() << endl;
+    cout << "price: " << getPrice() << " TL" << endl;
+    cout << "author: " << author << endl;
+    cout << "publisher: " << publisher << endl;
+    cout << "pages: " << page << endl;
     cout << "-----------------------" << endl;
 }
