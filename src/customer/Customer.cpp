@@ -1,3 +1,15 @@
+/*
+
+
+STUDENT NAME: YOUSIF HUSSEIN JABBAR AL-GBURI
+STUDENT NO  : 152120231144
+
+
+
+*/
+
+
+
 #include <iostream>
 #include <stdexcept>
 #include "Customer.h"
@@ -58,7 +70,7 @@ bool Customer::checkAccount(string username, string password) {
 }
 
 void Customer::getInfo() {
-    cout << "--- Customer details ---" << endl;
+    cout << "\n->\n-------- Customer details --------\n" << endl;
     cout << "ID: " << getCustomerID() << endl;
     cout << "password:" << getPassword() << endl;
     cout << "name: " << getName() << endl;
@@ -67,7 +79,7 @@ void Customer::getInfo() {
     cout << "bonus:" << getBonus() << endl;
     cout << "email:" << getEmail() << endl;
     cout << "username:" << getUsername() << endl;
-    cout << "-----------------------" << endl;
+    cout << "\n----------------------------------" << endl;
 }
 
 
