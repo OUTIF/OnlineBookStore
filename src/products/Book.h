@@ -1,3 +1,10 @@
+/*
+
+student name:ibrahim kütük
+student no:152120211162
+
+*/
+
 #pragma once
 #include "Product.h"
 
