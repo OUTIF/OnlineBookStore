@@ -1,3 +1,9 @@
+/*
+
+student name:ibrahim kütük
+student no:152120211162
+
+*/
 
 #include "Product.h"
 
@@ -40,9 +46,6 @@ void Product::setPrice(double price) {
 }
 
 void Product::printProperties() {
-    cout << "--- product details ---" << endl;
-    cout << "ID: " << getID() << endl;
-    cout << "name: " << getName() << endl;
-    cout << "price: " << getPrice() << " TL" << endl;
-    cout << "-----------------------" << endl;
+    cout << "ID: " << getID() <<" | Name:"<<getName()<<" | Price:"<<getPrice()<<" ";
+
 }
