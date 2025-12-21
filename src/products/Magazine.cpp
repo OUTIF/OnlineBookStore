@@ -1,4 +1,9 @@
+/*
 
+student name:ibrahim kütük
+student no:152120211162
+
+*/
 #include "Magazine.h"
 #include <iostream>
 
@@ -25,11 +30,11 @@ void Magazine::setType(string type) {
 }
 
 void Magazine::printProperties(){
-    cout << "--- Magazine Details ---" << endl;
+    cout << "--- Dergi Detaylari ---" << endl;
     cout << "ID: " << getID() << endl;
-    cout << "name: " << getName() << endl;
-    cout << "price: " << getPrice() << " TL" << endl;
-    cout << "issue: " << issue << endl;
-    cout << "type: " << type << endl;
+    cout << "Isim: " << getName() << endl;
+    cout << "Fiyat: " << getPrice() << " TL" << endl;
+    cout << "Sayi: " << issue << endl;
+    cout << "Tur: " << type << endl;
     cout << "-----------------------" << endl;
 }
