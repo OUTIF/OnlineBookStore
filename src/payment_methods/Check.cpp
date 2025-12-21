@@ -1,3 +1,10 @@
+/*
+
+student name:alper güzel
+student no:152120231116
+
+*/
+
 #include <string>
 #include "Check.h"
 
@@ -46,6 +53,7 @@ void Check::setBankID(string bankid){
 
 void Check::getInfo() {
 	cout << "--- Payment details ---" << endl;
+	cout << "Type:Check\n";
 	cout << "Amount: " << getAmount() << endl;
 	cout << "Name:" << getName() << endl;
 	cout << "Bank ID:" << getBankID() << endl;
