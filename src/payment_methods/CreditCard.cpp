@@ -1,3 +1,11 @@
+/*
+
+student name:alper güzel
+student no:152120231116
+
+*/
+
+
 #include "CreditCard.h"
 
 CreditCard::CreditCard(int Amount,long Number, string Expdata, string Type) {
@@ -50,6 +58,7 @@ void CreditCard::setExpData(string expdata) {
 
 void CreditCard::getInfo() {
 	cout << "--- Payment details ---" << endl;
+	cout << "Type:CreditCard\n";
 	cout << "Amount: " << getAmount() << endl;
 	cout << "Number:" << getNumber() << endl;
 	cout << "Expire Date:" << getExpData() << endl;
