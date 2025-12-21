@@ -1,3 +1,10 @@
+/*
+
+student name:ibrahim kütük
+student no:152120211162
+
+*/
+
 #pragma once
 
 #include <string>
@@ -15,8 +22,6 @@ private:
 public:
     
     Product(int id, string name, double price);
-
-
     virtual ~Product();
 
  
