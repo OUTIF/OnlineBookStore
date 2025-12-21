@@ -1,3 +1,13 @@
+/*
+
+
+STUDENT NAME: YOUSIF HUSSEIN JABBAR AL-GBURI
+STUDENT NO  : 152120231144
+
+
+
+*/
+
 #include <iostream>
 #include <stdexcept>
 #include  "ProductToPurchase.h"
@@ -31,9 +41,9 @@ int ProductToPurchase::getQuantity() {
 }
 
 void ProductToPurchase::getInfo() {
-	cout << "--- product to purchase details ---" << endl<<endl;
+	cout <<endl;
 	this->product->printProperties();
-	cout << "Quantity:" << getQuantity()<<endl;
-	cout << "-----------------------" << endl<<endl;
+	cout << "| Quantity:" << getQuantity()<<endl;
+	
 }
 
