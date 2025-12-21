@@ -1,3 +1,12 @@
+/*
+
+
+STUDENT NAME: YOUSIF HUSSEIN JABBAR AL-GBURI
+STUDENT NO  : 152120231144
+
+
+
+*/
 
 #include <iostream>
 #include <list>
@@ -20,6 +29,7 @@ using namespace std;
 
 int main() {
     //products 
+    
 // Magazines: (id, title, price, issueNumber, genre)
     Magazine mag1(1000, "National Geographic", 25.50, 10, "Science");
     Magazine mag2(1001, "Uykusuz", 12.0, 750, "Humor");
@@ -36,11 +46,13 @@ int main() {
     Book book3(3002, "Madonna in a Fur Coat", 22.50, "Sabahattin Ali", "Yapi Kredi Yayinlari", 170);
 
 
+
+
     //customers: (id, name, address, phone, Bonus, email, username, password)
     Customer admin(0, "Yusuf", "Antalya/konyaali/hurma", "+964 7711839891", 0, "yusuf@gmail.com", "admin", "admin00"); // ADMIN
     Customer cutomer1(1, "ibrahim", "adana", "+90 5343414113", 50, "kutuk@gmail.com", "ibrahim01", "kutuk");
     Customer cutomer2(2, "alper", "malatya", "+90 5518325535", 50, "alper@gmail.com", "alper", "guzel");
-    Customer customer3(3, "Asmaa", "kirkuk", "+90 65113511355", 100, "asmaa@gmail.com", "relktv", "1220");
+    Customer customer3(3, "yasir", "baghdad", "+90 6511352006", 100, "taso@gmail.com", "taso", "taso");
 
     
 
@@ -73,7 +85,7 @@ int main() {
     Customer* activeCustomer = nullptr;
     ShoppingCart *cart=nullptr;
 
-    // Create MainMenu object correctly
+    // Create MainMenu object 
     MainMenu mymenu(&customers, &products, activeCustomer, cart);
 
     // Run it
