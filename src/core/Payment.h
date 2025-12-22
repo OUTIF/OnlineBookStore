@@ -7,7 +7,7 @@ student no:152120231116
 
 #pragma once
 #include <iostream>
-#include< string>
+#include <string>
 
 
 using namespace std;
